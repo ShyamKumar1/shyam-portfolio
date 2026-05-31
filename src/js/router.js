@@ -7,6 +7,7 @@ class Router {
     this.routes = {};
     this.currentPage = null;
     this.isTransitioning = false;
+    this.pendingHash = null;
     this.init();
   }
 
@@ -15,63 +16,87 @@ class Router {
   }
 
   init() {
-    window.addEventListener('hashchange', () => this.navigate());
-    // If no hash, set home
+    window.addEventListener('hashchange', () => this.queueNavigate());
+    
+    // Start with home
     if (!window.location.hash || window.location.hash === '#') {
-      window.location.hash = '#home';
-    } else {
-      this.navigate();
+      history.replaceState(null, '', '#home');
     }
+    
+    // Initial render without transition
+    this.renderPage(window.location.hash.slice(1) || 'home', false);
   }
 
-  async navigate() {
-    if (this.isTransitioning) return;
-
+  queueNavigate() {
     const hash = window.location.hash.slice(1) || 'home';
-    const renderFn = this.routes[hash];
+    if (this.isTransitioning) {
+      this.pendingHash = hash;
+      return;
+    }
+    this.renderPage(hash, true);
+  }
 
+  renderPage(hash, animate = true) {
+    const renderFn = this.routes[hash];
     if (!renderFn) {
       window.location.hash = '#home';
       return;
     }
 
     this.isTransitioning = true;
-
-    // Page transition out
-    const transition = document.getElementById('page-transition');
-    transition.className = 'page-transition active';
-
-    await this.sleep(400);
-
-    // Render new page
+    this.pendingHash = null;
     const app = document.getElementById('app');
-    app.innerHTML = '';
-    renderFn(app);
-
-    // Update nav
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.classList.toggle('active', link.dataset.route === hash);
-    });
-
-    // Show navbar on non-home pages
+    const transition = document.getElementById('page-transition');
     const navbar = document.getElementById('navbar');
-    if (hash === 'home') {
-      navbar.classList.remove('visible');
-    } else {
-      navbar.classList.add('visible');
+
+    if (animate) {
+      // Page transition out
+      transition.className = 'page-transition active';
+      transition.style.transform = 'scaleY(1)';
+      transition.style.opacity = '1';
     }
 
-    // Page transition in
-    transition.className = 'page-transition out';
+    setTimeout(() => {
+      // Render new content
+      app.innerHTML = '';
+      renderFn(app);
 
-    await this.sleep(400);
-    transition.className = 'page-transition';
+      // Update navigation
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.dataset.route === hash);
+      });
 
-    this.currentPage = hash;
-    this.isTransitioning = false;
+      // Show/hide navbar
+      if (hash === 'home') {
+        navbar?.classList.remove('visible');
+      } else {
+        navbar?.classList.add('visible');
+      }
 
-    // Trigger scroll animations
-    this.initScrollAnimations();
+      if (animate) {
+        // Page transition in
+        transition.style.transform = 'scaleY(0)';
+        setTimeout(() => {
+          transition.style.opacity = '0';
+          this.isTransitioning = false;
+          
+          // Process any pending navigation
+          if (this.pendingHash && this.pendingHash !== hash) {
+            const pending = this.pendingHash;
+            this.pendingHash = null;
+            this.renderPage(pending, true);
+          }
+        }, 400);
+      } else {
+        transition.style.opacity = '0';
+        transition.style.transform = 'scaleY(0)';
+        this.isTransitioning = false;
+      }
+
+      // Reinitialize scroll animations
+      this.initScrollAnimations();
+      this.currentPage = hash;
+    }, animate ? 400 : 50);
   }
 
   initScrollAnimations() {
@@ -87,12 +112,10 @@ class Router {
     );
 
     document.querySelectorAll('.fade-in, .timeline-item').forEach(el => {
-      observer.observe(el);
+      if (!el.classList.contains('visible')) {
+        observer.observe(el);
+      }
     });
-  }
-
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
 
