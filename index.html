@@ -3,48 +3,158 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shyam OS — AI Engineer Portfolio</title>
-  <meta name="description" content="AI Engineer building voice agents, TTS systems, and multi-agent architectures." />
+  <title>Shyam Kumar Gatti — The Time Machine</title>
+  <meta name="description" content="AI Engineer. Scroll through time." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%2300FF41'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='%23000' font-weight='bold'>S</text></svg>" />
-  <link rel="stylesheet" href="/src/styles/theme.css" />
-  <link rel="stylesheet" href="/src/styles/boot.css" />
-  <link rel="stylesheet" href="/src/styles/os.css" />
-  <link rel="stylesheet" href="/src/styles/apps.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>⌛</text></svg>" />
+  <link rel="stylesheet" href="/src/styles.css" />
 </head>
 <body>
-  <div id="boot-screen" class="boot-screen">
-    <div class="boot-logo">⚡</div>
-    <div class="boot-name">SHYAM OS</div>
-    <div class="boot-version">v1.0 — AI Engineer Edition</div>
-    <div class="boot-bar-bg"><div class="boot-bar" id="boot-bar"></div></div>
-    <div class="boot-status" id="boot-status">Initializing kernel...</div>
+  <!-- Canvas background -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Scroll progress indicator -->
+  <div class="scroll-track" id="scroll-track">
+    <div class="scroll-thumb" id="scroll-thumb"></div>
   </div>
 
-  <div id="desktop" class="desktop hidden">
-    <canvas id="wallpaper-canvas"></canvas>
-    <div id="desktop-icons" class="desktop-icons"></div>
-    <div id="window-container" class="window-container"></div>
-    
-    <div id="taskbar" class="taskbar">
-      <button id="start-btn" class="taskbar-start">⏻ Start</button>
-      <div id="taskbar-windows" class="taskbar-windows"></div>
-      <div class="taskbar-tray">
-        <span id="tray-battery">🔋 87%</span>
-        <span id="tray-clock" class="tray-clock"></span>
-      </div>
-    </div>
-
-    <div id="start-menu" class="start-menu hidden">
-      <div class="start-header">SHYAM OS</div>
-      <div class="start-items" id="start-items"></div>
-      <div class="start-footer">
-        <button id="start-about">👤 About</button>
-        <button id="start-github">🐙 GitHub</button>
-      </div>
-    </div>
+  <!-- Era indicator -->
+  <div class="era-indicator" id="era-indicator">
+    <span class="era-label" id="era-label">2016</span>
+    <div class="era-dots" id="era-dots"></div>
   </div>
+
+  <!-- Content sections -->
+  <main class="sections" id="sections">
+    <!-- SECTION 0: INTRO -->
+    <section class="era-section" data-era="0" id="sec-0">
+      <div class="section-inner">
+        <div class="time-stamp">⌛ 2026</div>
+        <h1 class="hero-title">Shyam Kumar<br><span class="gradient-text">Gatti</span></h1>
+        <p class="hero-sub">AI Engineer · Builder · Ship-it Energy</p>
+        <p class="hero-desc">Scroll down to travel through my journey —<br>from engineering foundations to building AI systems.</p>
+        <div class="scroll-hint">↓ Scroll to begin the journey</div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: 2016 — DIPLOMA -->
+    <section class="era-section" data-era="1" id="sec-1">
+      <div class="section-inner">
+        <div class="time-stamp retro-glow">⌛ 2016</div>
+        <div class="era-badge retro">THE BEGINNING</div>
+        <h2 class="era-title">Diploma in<br>Computer Engineering</h2>
+        <div class="era-content">
+          <p>SV Government Polytechnic, Tirupati</p>
+          <p class="era-desc">The first step. Learning to code, building logic, understanding systems. The foundations of everything that came after.</p>
+        </div>
+        <div class="era-stat">⚡ First line of code written here</div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: 2019 — B.TECH -->
+    <section class="era-section" data-era="2" id="sec-2">
+      <div class="section-inner">
+        <div class="time-stamp">⌛ 2019</div>
+        <div class="era-badge">THE FOUNDATION</div>
+        <h2 class="era-title">B.Tech — Computer<br>Science &amp; Engineering</h2>
+        <div class="era-content">
+          <p>JNTUA College of Engineering, Anantapur</p>
+          <p class="era-desc">Deep dive into algorithms, data structures, and software architecture. The theory that would later power real AI systems.</p>
+        </div>
+        <div class="era-stat">🎓 4 years of engineering</div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: 2022 — COGNIZANT -->
+    <section class="era-section" data-era="3" id="sec-3">
+      <div class="section-inner">
+        <div class="time-stamp corp-glow">⌛ 2022</div>
+        <div class="era-badge corporate">THE ENTERPRISE</div>
+        <h2 class="era-title">Programming Analyst<br>@ Cognizant</h2>
+        <div class="era-content">
+          <p>Java · Spring Boot · Angular · TypeScript · AWS</p>
+          <p class="era-desc">Enterprise-grade development. Production systems used by real clients. Learned what it means to ship reliable software at scale. Promoted from intern to analyst in 3 years.</p>
+        </div>
+        <div class="era-stat">🏆 Star of the Quarter Award</div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: 2023 — TRILIMEDIA -->
+    <section class="era-section" data-era="4" id="sec-4">
+      <div class="section-inner">
+        <div class="time-stamp">⌛ 2023</div>
+        <div class="era-badge creative">THE CREATOR</div>
+        <h2 class="era-title">Founder &amp; CEO<br>Trilimedia Digital Agency</h2>
+        <div class="era-content">
+          <p>10+ clients · Brand Strategy · Creative Direction</p>
+          <p class="era-desc">Built an agency from zero. Brand identity, social media, campaigns — for F&B, retail, IT, fitness, and education. Learned that engineering without strategy is just code.</p>
+        </div>
+        <div class="era-stat">🚀 Built from scratch to 10+ clients</div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: 2025 — TECHNITUDE -->
+    <section class="era-section" data-era="5" id="sec-5">
+      <div class="section-inner">
+        <div class="time-stamp">⌛ 2025</div>
+        <div class="era-badge leader">THE LEADER</div>
+        <h2 class="era-title">Chief Operating Officer<br>Technitude Info Solutions</h2>
+        <div class="era-content">
+          <p>Operations · Brand Strategy · Digital Transformation</p>
+          <p class="era-desc">Leading operations for a dual-vertical IT/Ed-Tech company. Architected brand restructuring, content pipelines, and multi-stakeholder systems.</p>
+        </div>
+        <div class="era-stat">📊 Leading 2 business verticals</div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: 2025-26 — AI ENGINEER (CURRENT) -->
+    <section class="era-section" data-era="6" id="sec-6">
+      <div class="section-inner">
+        <div class="time-stamp neon-glow">⌛ NOW</div>
+        <div class="era-badge ai">THE BUILDER</div>
+        <h2 class="era-title">AI Engineer<br><span class="neon-text">Building the Future</span></h2>
+        <div class="era-content">
+          <p>Voice Agents · TTS Systems · Multi-Agent Architectures</p>
+          <p class="era-desc">From enterprise dev to agency founder to AI engineer — every experience shaped how I build. Now I ship AI systems that work, at the intersection of code and creativity.</p>
+        </div>
+        <div class="projects-strip">
+          <div class="proj-chip" onclick="window.open('https://github.com/ShyamKumar1/voxcraft','_blank')">🎙 VoxCraft TTS</div>
+          <div class="proj-chip" onclick="window.open('https://github.com/ShyamKumar1/intellicatalog-livekit','_blank')">🤖 LiveKit Agent</div>
+          <div class="proj-chip" onclick="window.open('https://github.com/ShyamKumar1/RR28','_blank')">💹 RR28 Crypto</div>
+          <div class="proj-chip" onclick="window.open('https://github.com/ShyamKumar1/dentflow-ai','_blank')">🦷 DentFlow AI</div>
+          <div class="proj-chip" onclick="window.open('https://github.com/ShyamKumar1/ai-code-evaluator','_blank')">📊 Code Evaluator</div>
+          <div class="proj-chip" onclick="window.open('https://github.com/ShyamKumar1/Coder815','_blank')">🔧 MCP Server</div>
+          <div class="proj-chip" onclick="window.open('https://github.com/ShyamKumar1/OpenCode-Agent-Teams','_blank')">🧠 Agent Teams</div>
+          <div class="proj-chip" onclick="window.open('https://github.com/ShyamKumar1/ProjectsHub','_blank')">🏗️ ProjectsHub</div>
+        </div>
+        <div class="ai-stats">
+          <span>⚡ 8 AI Projects Shipped</span>
+          <span>🔧 27 Technologies</span>
+          <span>🌐 31 TTS Languages</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: CONTACT / FINALE -->
+    <section class="era-section" data-era="7" id="sec-7">
+      <div class="section-inner">
+        <div class="time-stamp">⌛ FUTURE</div>
+        <div class="era-badge ai">LET'S BUILD</div>
+        <h2 class="era-title">Available for<br><span class="neon-text">AI Engineering Roles</span></h2>
+        <div class="era-content" style="text-align:center;">
+          <p class="era-desc">I'm actively looking for roles where I can build<br>voice agents, AI systems, and the next generation<br>of intelligent software.</p>
+        </div>
+        <div class="contact-grid">
+          <a href="mailto:gatti.shyamkumar@gmail.com" class="contact-btn">📧 Email</a>
+          <a href="https://linkedin.com/in/shyam-kumar-gatti" class="contact-btn" target="_blank">💼 LinkedIn</a>
+          <a href="https://github.com/ShyamKumar1" class="contact-btn" target="_blank">🐙 GitHub</a>
+          <a href="tel:+916302691075" class="contact-btn">📞 Call</a>
+        </div>
+        <div class="final-quote">"Every line of code, every brand, every system —<br>it all leads here. Let's build the future."</div>
+      </div>
+    </section>
+  </main>
 
   <script type="module" src="/src/main.js"></script>
 </body>

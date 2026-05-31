@@ -1,0 +1,376 @@
+/* =============================================================================
+   TIME MACHINE — Global Styles
+   ============================================================================= */
+:root {
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+  --transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: #0a0a0f;
+  color: #f0f0f0;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+::selection { background: #00FF41; color: #000; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+/* =============================================================================
+   CANVAS BACKGROUND
+   ============================================================================= */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: opacity 1s ease;
+}
+
+/* =============================================================================
+   SCROLL PROGRESS
+   ============================================================================= */
+.scroll-track {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  width: 3px;
+  height: 200px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+}
+.scroll-thumb {
+  width: 100%;
+  height: 30px;
+  background: linear-gradient(to bottom, #00FF41, #00E5FF);
+  border-radius: 2px;
+  transition: height 0.3s ease;
+}
+
+/* =============================================================================
+   ERA INDICATOR
+   ============================================================================= */
+.era-indicator {
+  position: fixed;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.era-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: #555;
+  transition: var(--transition);
+}
+.era-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.era-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  transition: var(--transition);
+  cursor: pointer;
+}
+.era-dot.active {
+  background: #00FF41;
+  box-shadow: 0 0 12px rgba(0,255,65,0.4);
+  transform: scale(1.3);
+}
+
+/* =============================================================================
+   SECTIONS
+   ============================================================================= */
+.sections {
+  position: relative;
+  z-index: 1;
+}
+.era-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  position: relative;
+  opacity: 0.3;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: scale(0.95);
+}
+.era-section.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+.section-inner {
+  max-width: 720px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+/* =============================================================================
+   TIME STAMP
+   ============================================================================= */
+.time-stamp {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 16px;
+  letter-spacing: 4px;
+  transition: var(--transition);
+}
+.retro-glow { color: #ff8800 !important; text-shadow: 0 0 20px rgba(255,136,0,0.3); }
+.corp-glow { color: #4488ff !important; text-shadow: 0 0 20px rgba(68,136,255,0.3); }
+.neon-glow { color: #00FF41 !important; text-shadow: 0 0 30px rgba(0,255,65,0.5); }
+
+/* =============================================================================
+   HERO (First section)
+   ============================================================================= */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 9vw, 96px);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  letter-spacing: -2px;
+}
+.hero-title .gradient-text {
+  background: linear-gradient(135deg, #00FF41, #00E5FF, #8B5CF6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: clamp(18px, 2.5vw, 28px);
+  color: #888;
+  font-weight: 400;
+  margin-bottom: 16px;
+}
+.hero-desc {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.7;
+}
+.scroll-hint {
+  margin-top: 48px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #444;
+  animation: bounceScroll 2s ease-in-out infinite;
+}
+@keyframes bounceScroll {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+
+/* =============================================================================
+   ERA BADGE
+   ============================================================================= */
+.era-badge {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  font-family: var(--font-mono);
+}
+.era-badge.retro {
+  background: rgba(255,136,0,0.1);
+  color: #ff8800;
+  border: 1px solid rgba(255,136,0,0.2);
+}
+.era-badge.corporate {
+  background: rgba(68,136,255,0.1);
+  color: #4488ff;
+  border: 1px solid rgba(68,136,255,0.2);
+}
+.era-badge.creative {
+  background: rgba(255,107,157,0.1);
+  color: #ff6b9d;
+  border: 1px solid rgba(255,107,157,0.2);
+}
+.era-badge.leader {
+  background: rgba(255,215,0,0.1);
+  color: #ffd700;
+  border: 1px solid rgba(255,215,0,0.2);
+}
+.era-badge.ai {
+  background: rgba(0,255,65,0.1);
+  color: #00FF41;
+  border: 1px solid rgba(0,255,65,0.2);
+}
+
+/* =============================================================================
+   ERA TITLE
+   ============================================================================= */
+.era-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.neon-text {
+  background: linear-gradient(90deg, #00FF41, #00E5FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* =============================================================================
+   ERA CONTENT
+   ============================================================================= */
+.era-content {
+  margin-bottom: 16px;
+}
+.era-content p {
+  font-size: 16px;
+  color: #aaa;
+  margin-bottom: 4px;
+}
+.era-desc {
+  font-size: 15px !important;
+  color: #777 !important;
+  line-height: 1.8 !important;
+  margin-top: 12px !important;
+  max-width: 520px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.era-stat {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #555;
+  margin-top: 16px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 100px;
+  display: inline-block;
+}
+
+/* =============================================================================
+   PROJECT STRIP
+   ============================================================================= */
+.projects-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 24px 0;
+}
+.proj-chip {
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(0,255,65,0.06);
+  border: 1px solid rgba(0,255,65,0.15);
+  color: #ccc;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.proj-chip:hover {
+  background: rgba(0,255,65,0.15);
+  border-color: #00FF41;
+  color: #00FF41;
+  transform: translateY(-2px);
+}
+.ai-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #555;
+  margin-top: 16px;
+}
+.ai-stats span {
+  padding: 6px 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 100px;
+}
+
+/* =============================================================================
+   CONTACT
+   ============================================================================= */
+.contact-grid {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+}
+.contact-btn {
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #ccc;
+}
+.contact-btn:hover {
+  border-color: #00FF41;
+  color: #00FF41;
+  background: rgba(0,255,65,0.08);
+  transform: translateY(-2px);
+}
+.final-quote {
+  font-size: 18px;
+  color: #666;
+  font-style: italic;
+  line-height: 1.6;
+  margin-top: 40px;
+  font-family: var(--font-display);
+}
+
+/* =============================================================================
+   RESPONSIVE
+   ============================================================================= */
+@media (max-width: 600px) {
+  .era-indicator { display: none; }
+  .scroll-track { right: 8px; height: 120px; }
+  .era-section { padding: 40px 16px; }
+  .contact-grid { flex-direction: column; align-items: center; }
+  .ai-stats { flex-direction: column; align-items: center; }
+}
+
+/* =============================================================================
+   ENTRANCE ANIMATIONS
+   ============================================================================= */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.era-section.visible .time-stamp { animation: fadeUp 0.6s ease both; }
+.era-section.visible .era-badge { animation: fadeUp 0.6s ease 0.1s both; }
+.era-section.visible .era-title { animation: fadeUp 0.6s ease 0.2s both; }
+.era-section.visible .era-content { animation: fadeUp 0.6s ease 0.3s both; }
+.era-section.visible .era-stat,
+.era-section.visible .projects-strip,
+.era-section.visible .ai-stats,
+.era-section.visible .contact-grid,
+.era-section.visible .final-quote { animation: fadeUp 0.6s ease 0.4s both; }
