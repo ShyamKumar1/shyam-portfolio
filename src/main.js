@@ -48,6 +48,7 @@ function createParticles() {
       animation-delay: ${delay}s;
       --p-opacity: ${opacity};
     `;
+    p.className = 'particle';
     if (Math.random() > 0.6) p.classList.add('diamond');
     field.appendChild(p);
   }
