@@ -1,0 +1,206 @@
+/* =============================================================================
+   APPS — Content styles for each application window
+   ============================================================================= */
+
+/* === Projects App === */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.proj-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-window);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.proj-card:hover {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 229, 255, 0.04);
+  transform: translateY(-1px);
+}
+
+.proj-card-icon { font-size: 28px; margin-bottom: 8px; }
+.proj-card-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.proj-card-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+.proj-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+.proj-tag {
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 500;
+  background: rgba(0, 229, 255, 0.08);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+}
+.proj-tag.green { background: rgba(0,255,65,0.08); color: var(--accent-green); border-color: rgba(0,255,65,0.15); }
+.proj-tag.purple { background: rgba(139,92,246,0.08); color: var(--accent-purple); border-color: rgba(139,92,246,0.15); }
+
+.proj-detail {
+  display: none;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-window);
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+}
+
+.proj-detail.visible { display: block; animation: windowOpen 0.2s ease; }
+
+.proj-detail h3 { font-size: 18px; margin-bottom: 6px; }
+.proj-detail p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 12px; }
+.proj-detail-links { display: flex; gap: 8px; }
+.proj-detail-links a {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+}
+.proj-link-gh { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+.proj-link-gh:hover { background: rgba(255,255,255,0.12); }
+.proj-link-demo { background: var(--accent-green); color: #000; }
+.proj-link-demo:hover { box-shadow: 0 0 20px rgba(0,255,65,0.3); }
+
+/* === Stack App === */
+.stack-cats { display: flex; flex-direction: column; gap: 14px; }
+.stack-cat {}
+.stack-cat-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+.stack-cat-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* === Resume App === */
+.resume-section { margin-bottom: 20px; }
+.resume-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-green);
+  font-family: var(--font-mono);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.timeline-item {
+  padding-left: 20px;
+  border-left: 2px solid var(--border-window);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-green);
+}
+
+.timeline-date { font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan); margin-bottom: 2px; }
+.timeline-role { font-size: 14px; font-weight: 600; }
+.timeline-company { font-size: 12px; color: var(--accent-cyan); margin-bottom: 4px; }
+.timeline-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+.cert-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  background: rgba(139,92,246,0.08);
+  color: var(--accent-purple);
+  border: 1px solid rgba(139,92,246,0.15);
+  margin: 2px;
+}
+
+/* === About App === */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.about-bio p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+.about-bio strong { color: var(--text-primary); }
+
+.contact-list { display: flex; flex-direction: column; gap: 6px; }
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-window);
+  transition: var(--transition);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+.contact-item:hover { border-color: var(--accent-green); background: var(--bg-hover); }
+.contact-item-icon { font-size: 18px; }
+.contact-item-info h4 { font-size: 13px; font-weight: 600; }
+.contact-item-info span { font-size: 11px; color: var(--text-dim); }
+
+/* === Terminal App === */
+.terminal {
+  background: #0A0A0F;
+  border-radius: 4px;
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-output {
+  flex: 1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.terminal-output .green { color: var(--accent-green); }
+.terminal-output .cyan { color: var(--accent-cyan); }
+.terminal-output .dim { color: var(--text-dim); }
+.terminal-output .gold { color: var(--accent-gold); }
+.terminal-output .pink { color: var(--accent-pink); }
+.terminal-output .purple { color: var(--accent-purple); }
+
+.terminal-input-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.terminal-prompt { color: var(--accent-green); white-space: nowrap; }
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  caret-color: var(--accent-green);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
+  .window { min-width: 280px !important; left: 10px !important; right: 10px !important; }
+  .desktop-icons { flex-direction: row; flex-wrap: wrap; height: auto; gap: 2px; }
+  .desktop-icon { width: 64px; }
+  .desktop-icon-icon { font-size: 28px; }
+}
