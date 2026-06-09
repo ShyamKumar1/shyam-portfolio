@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Case study: Alexander — Autonomous AI Agent with Causal Reasoning. A deep dive into a three-pillar agent framework built on pydantic-ai with causal simulation, multi-tier memory, metacognitive audit, and goal-driven autonomy.">
+  <meta property="og:title" content="Alexander — Autonomous AI Agent with Causal Reasoning">
+  <meta property="og:description" content="Engineered to overcome fundamental LLM ceilings through causal simulation, three-tier memory, metacognitive audit, and goal-driven autonomy.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://shyamkumar.dev/case-studies/alexander.html">
+  <meta property="og:image" content="https://shyamkumar.dev/assets/og-alexander.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Alexander — Autonomous AI Agent with Causal Reasoning | Case Study</title>
+</head>
+<body>
+
+<!-- ===== Navigation ===== -->
+<nav class="case-nav">
+  <a href="../index.html">&larr; Back to Portfolio</a>
+  <span class="nav-title">Case Study</span>
+</nav>
+
+<!-- ===== Article ===== -->
+<article class="case-article">
+
+  <!-- ===== Header ===== -->
+  <header class="case-header">
+    <span class="case-category">AI Agent Framework</span>
+    <h1>Alexander</h1>
+    <p class="case-tagline">
+      Autonomous AI Agent with Causal Reasoning &mdash; engineered to overcome fundamental
+      LLM ceilings through causal simulation, three-tier memory, metacognitive audit,
+      and goal-driven autonomy.
+    </p>
+    <div class="case-meta">
+      <span>&#x1F4E6; Stack: Python, pydantic-ai, SQLite/FTS5, FastAPI, Typer, Rich</span>
+      <span>&#x1F4C5; Year: 2026</span>
+      <span>&#x26A1; Status: Active development &mdash; all 3 pillars scaffolded, CLI + web UI operational</span>
+    </div>
+  </header>
+
+  <!-- ===== Problem ===== -->
+  <section class="case-section">
+    <h2><span class="section-number">01</span> Problem</h2>
+    <p>
+      Large language models today are incredibly capable conversationalists, but they
+      remain fundamentally limited as <strong>autonomous agents</strong>. They cannot reliably simulate
+      the causal consequences of their actions, maintain persistent structured memory
+      across sessions, self-calibrate their confidence, or audit their own reasoning
+      for contradictions and fallacies.
+    </p>
+    <p>
+      Existing agent frameworks provide tool-calling abstractions but treat reasoning,
+      memory, and autonomy as shallow bolt-ons rather than first-class architectural
+      pillars. The result: agents that hallucinate confidently, forget context between
+      turns, fail to detect when they are wrong, and cannot pursue long-term goals
+      without human intervention.
+    </p>
+    <div class="insight-box">
+      <div class="insight-label">Core Thesis</div>
+      <p>
+        To build agents that can be trusted with autonomous tasks, we need more than
+        an LLM wrapped in a tool loop. We need a system that can <strong>think causally</strong>,
+        <strong>remember persistently</strong>, and <strong>act autonomously</strong> &mdash; with metacognitive
+        oversight at every layer.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Architecture ===== -->
+  <section class="case-section">
+    <h2><span class="section-number">02</span> Architecture</h2>
+    <p>
+      Alexander is built as a layered system on top of <strong>pydantic-ai</strong>. The core design
+      decomposes agent intelligence into three orthogonal pillars &mdash; Think, Remember,
+      and Act &mdash; each with its own internal subsystems and async lifecycle.
+    </p>
+    <pre class="arch-diagram">
+AlexanderAgent (wraps pydantic-ai.Agent)
+&#x251C;&#x2500;&#x2500; Think (reasoning engine)
+&#x2502;   &#x251C;&#x2500;&#x2500; Simulator &mdash; AST-based causal execution simulation
+&#x2502;   &#x251C;&#x2500;&#x2500; Planner &mdash; Hierarchical task network decomposition
+&#x2502;   &#x251C;&#x2500;&#x2500; Confidence &mdash; Multi-signal calibrator (logprobs, consistency, verification)
+&#x2502;   &#x2514;&#x2500;&#x2500; Metacognition &mdash; Contradiction + fallacy + overconfidence detection
+&#x251C;&#x2500;&#x2500; Remember (memory system)
+&#x2502;   &#x251C;&#x2500;&#x2500; Working &mdash; Priority-evicted, capacity-limited, in-memory
+&#x2502;   &#x251C;&#x2500;&#x2500; Episodic &mdash; Session-structured, time-indexed, SQLite-backed
+&#x2502;   &#x251C;&#x2500;&#x2500; Semantic &mdash; Fact store with FTS5 + contradiction detection
+&#x2502;   &#x251C;&#x2500;&#x2500; Associative &mdash; Cross-tier graph linking (temporal, semantic, causal)
+&#x2502;   &#x2514;&#x2500;&#x2500; Consolidation &mdash; Background: promote, extract, link, decay (async loop)
+&#x2514;&#x2500;&#x2500; Act (autonomy layer)
+    &#x251C;&#x2500;&#x2500; Goals &mdash; Registry with lifecycle (proposed&rarr;active&rarr;paused&rarr;completed&rarr;archived)
+    &#x251C;&#x2500;&#x2500; Scheduler &mdash; Async autonomous loop with tick-based execution
+    &#x251C;&#x2500;&#x2500; Tools &mdash; Registry wrapping pydantic-ai tools with safety levels
+    &#x2514;&#x2500;&#x2500; Triggers &mdash; Temporal, state, pattern, novelty detectors
+    </pre>
+    <p>
+      The entire system is orchestrated under a single <code>AlexanderAgent</code> class that
+      wraps pydantic-ai&rsquo;s <code>Agent</code>. Each pillar runs its own async event loop, and
+      the pillars communicate through well-defined internal interfaces &mdash; for example,
+      the <strong>Confidence</strong> module in Think feeds calibration data into <strong>Metacognition</strong>,
+      which can in turn pause goal execution in the <strong>Act</strong> layer.
+    </p>
+  </section>
+
+  <!-- ===== Tech Stack ===== -->
+  <section class="case-section">
+    <h2><span class="section-number">03</span> Tech Stack</h2>
+    <p>
+      Alexander is built entirely in Python, leveraging pydantic-ai for LLM integration
+      and a carefully chosen set of libraries for persistence, UI, and developer experience.
+    </p>
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Technology</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Python 3.14</td>
+          <td>Core language with match/case, improved asyncio, and performance enhancements</td>
+        </tr>
+        <tr>
+          <td>pydantic-ai</td>
+          <td>LLM abstraction layer providing 25+ model providers, FallbackModel, structured output via Pydantic v2, tool system, and async infrastructure</td>
+        </tr>
+        <tr>
+          <td>SQLite + FTS5</td>
+          <td>Persistent memory store with full-text search for semantic memory queries</td>
+        </tr>
+        <tr>
+          <td>FastAPI + Jinja2</td>
+          <td>Web dashboard with 5 pages: overview, goals, memory explorer, logs, and configuration</td>
+        </tr>
+        <tr>
+          <td>Typer</td>
+          <td>8 CLI commands for full agent interaction (think, remember, act, config, run, status, init, version)</td>
+        </tr>
+        <tr>
+          <td>Rich</td>
+          <td>Terminal formatting with live progress bars for memory consolidation and scheduler ticks</td>
+        </tr>
+        <tr>
+          <td>asyncio</td>
+          <td>Async I/O across all layers &mdash; concurrent scheduler, memory consolidation, and tool execution</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===== Key Challenges ===== -->
+  <section class="case-section">
+    <h2><span class="section-number">04</span> Key Challenges</h2>
+
+    <h3>Causal Simulation</h3>
+    <p>
+      The most technically demanding component. The <strong>Simulator</strong> must predict execution
+      outcomes by analyzing AST representations of code &mdash; understanding control flow,
+      data dependencies, and side effects <em>without</em> running the code. This requires a
+      lightweight symbolic execution engine that can handle conditionals, loops, function
+      calls, and exception paths.
+    </p>
+
+    <h3>Multi-Tier Memory Consolidation</h3>
+    <p>
+      Information flows from Working Memory &rarr; Episodic Memory &rarr; Semantic Memory
+      through an automated consolidation engine. The challenge: deciding <em>what</em> to
+      promote, <em>when</em> to promote it, and <em>how</em> to detect and resolve contradictions
+      when newly acquired facts conflict with established knowledge. The consolidation
+      loop runs asynchronously in the background to avoid blocking agent interaction.
+    </p>
+
+    <h3>Confidence Calibration</h3>
+    <p>
+      LLMs are notoriously overconfident. Alexander&rsquo;s <strong>Confidence</strong> module combines
+      three orthogonal signals into a single calibrated score:
+    </p>
+    <ul>
+      <li><strong>Token logprobs</strong> &mdash; raw model uncertainty at the token level</li>
+      <li><strong>Consistency across re-sampling</strong> &mdash; generating the same answer multiple times and measuring agreement</li>
+      <li><strong>Verifiability of claims</strong> &mdash; cross-referencing generated statements against facts in semantic memory</li>
+    </ul>
+    <p>
+      The calibration model must avoid overfitting to any single signal and remain robust
+      across diverse query types.
+    </p>
+
+    <h3>Metacognitive Audit</h3>
+    <p>
+      A self-monitoring loop that runs <em>after</em> each reasoning step to detect:
+    </p>
+    <ul>
+      <li><strong>Contradictions</strong> &mdash; the agent asserting A and not-A in the same context</li>
+      <li><strong>Fallacies</strong> &mdash; circular reasoning, false dichotomies, hasty generalizations</li>
+      <li><strong>Overconfidence</strong> &mdash; high confidence on claims that are unverifiable or contradicted</li>
+    </ul>
+    <p>
+      When a metacognitive issue is detected, the agent can backtrack, revise its reasoning,
+      or escalate to a human operator.
+    </p>
+
+    <div class="insight-box insight-box-cyan">
+      <div class="insight-label">Design Decision</div>
+      <p>
+        Rather than building the metacognitive audit as a separate LLM call (which would
+        double latency and cost), Alexander implements it as a set of lightweight heuristic
+        detectors + a targeted verification LLM call only when heuristic thresholds are
+        exceeded. This keeps the overhead at ~15% of total reasoning time.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Results ===== -->
+  <section class="case-section">
+    <h2><span class="section-number">05</span> Results</h2>
+    <p>
+      The project has achieved a fully functional 3-pillar architecture with concrete
+      metrics across codebase, testing, and usability:
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-value">3</span>
+        <span class="stat-label">Pillars: Think &middot; Remember &middot; Act</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value cyan">8</span>
+        <span class="stat-label">CLI Commands</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value purple">4</span>
+        <span class="stat-label">Think Modules</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value gold">5</span>
+        <span class="stat-label">Memory Tiers</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">80+</span>
+        <span class="stat-label">Python Source Files</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value cyan">50+</span>
+        <span class="stat-label">Passing Tests</span>
+      </div>
+    </div>
+
+    <p><strong>Key milestones delivered:</strong></p>
+    <ul>
+      <li>3-pillar architecture complete with <strong>80+ Python source files</strong> across think, remember, and act modules</li>
+      <li>SQLite persistence with <strong>FTS5 full-text search</strong> for semantic memory &mdash; enabling fact retrieval, contradiction detection, and similarity queries</li>
+      <li>Web dashboard built with <strong>FastAPI + Jinja2</strong> providing clean interfaces for dashboard overview, goal tracking, and memory exploration</li>
+      <li>CLI with <strong>8 commands</strong> designed for power users &mdash; direct access to each pillar without needing the web UI</li>
+      <li><strong>50+ passing tests</strong> covering the core subsystems in think, remember, and act pillars</li>
+    </ul>
+
+    <div class="insight-box insight-box-gold">
+      <div class="insight-label">What Stands Out</div>
+      <p>
+        The architecture diagram above isn&rsquo;t aspirational &mdash; every node in that tree
+        corresponds to a real Python module with tests, CLI access, and internal APIs.
+        The foundation is complete and running; the next phase focuses on cross-pillar
+        integration and real-world task evaluation.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== What I Learned ===== -->
+  <section class="case-section">
+    <h2><span class="section-number">06</span> What I Learned</h2>
+
+    <h3>Agents need structured reasoning, not just prompt engineering</h3>
+    <p>
+      Early experiments showed that even the best prompts couldn&rsquo;t prevent LLMs from
+      making reasoning errors on multi-step tasks. The <strong>Simulator</strong> and <strong>Planner</strong>
+      modules demonstrated that encoding reasoning structure explicitly (rather than
+      relying on the LLM to discover it) dramatically improves outcome reliability.
+    </p>
+
+    <h3>Memory is the bottleneck to autonomy</h3>
+    <p>
+      Without persistent, structured memory, every agent session starts from zero. The
+      multi-tier memory system revealed that the key design challenge isn&rsquo;t storage &mdash;
+      it&rsquo;s <strong>consolidation policy</strong>: deciding what to remember, how to link new knowledge
+      with old, and when to forget. The background async consolidation loop was essential;
+      blocking the agent for memory operations made it feel sluggish and unresponsive.
+    </p>
+
+    <h3>Confidence calibration requires multiple signals</h3>
+    <p>
+      Relying on token logprobs alone produces brittle calibration. Logprobs reflect
+      model uncertainty but don&rsquo;t capture whether the model <em>should</em> be uncertain about
+      a particular factual claim. Combining logprobs with consistency re-sampling and
+      semantic memory verification produces a much more robust signal &mdash; though it adds
+      latency that must be managed carefully.
+    </p>
+
+    <h3>pydantic-ai is the right foundation</h3>
+    <p>
+      Building on pydantic-ai saved months of work. Its provider abstraction, structured
+      output system, and async-first design meant we could focus on the three pillars
+      rather than reinventing LLM integration. The <code>FallbackModel</code> pattern alone
+      (automatically falling back to a different provider on failure) is a killer feature
+      for production agent systems.
+    </p>
+
+    <div class="insight-box insight-box-purple">
+      <div class="insight-label">Bottom Line</div>
+      <p>
+        Alexander proves that the ceiling on LLM-based agents is architectural, not
+        fundamental. With the right pillars &mdash; causal reasoning, persistent memory,
+        confidence calibration, and metacognitive oversight &mdash; autonomous agents can
+        operate far beyond what raw prompt engineering alone enables.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="case-footer">
+    <div class="footer-links">
+      <a href="https://github.com/ShyamKumar1/alexander-agent" target="_blank" rel="noopener" class="primary-btn">View on GitHub</a>
+      <a href="../index.html">Back to Portfolio</a>
+    </div>
+    <a href="../index.html" class="back-link">&larr; Return to portfolio</a>
+  </footer>
+
+</article>
+
+</body>
+</html>

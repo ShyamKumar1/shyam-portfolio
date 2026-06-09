@@ -13,6 +13,7 @@ const ERAS = [
   { name: '2025', bg: '#140a14', accent: '#ff6b9d' },
   { name: '2025', bg: '#0f140a', accent: '#ffd700' },
   { name: 'AI', bg: '#050510', accent: '#00FF41' },
+  { name: 'Case Studies', bg: '#080015', accent: '#8B5CF6' },
   { name: 'Future', bg: '#050510', accent: '#00E5FF' },
 ];
 

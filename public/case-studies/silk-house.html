@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Case study: Silk House Billing Portal — a double-entry GST accounting system for a 5-firm silk saree business. Automates GST compliance, bank reconciliation, and multi-firm consolidated reporting." />
+  <meta property="og:title" content="Silk House Billing Portal — Multi-Firm GST Accounting System" />
+  <meta property="og:description" content="Full-stack TypeScript application replacing physical ledgers with live dashboards, automated GST, and multi-firm consolidation for a real silk saree business." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://shyamkumar.dev/case-studies/silk-house.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>Silk House Billing Portal — Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Inline overrides specific to this case study */
+    .case-section h2 .section-number { color: var(--accent-cyan); }
+    .tech-table { margin: 20px 0; }
+    .tech-table td:last-child { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+    .challenge-list { list-style: none; padding: 0; margin: 0; }
+    .challenge-list li {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .challenge-list li strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 16px;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+    }
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .result-card .result-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+    .result-card .result-text { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+    .result-card:hover { border-color: var(--accent-cyan); }
+  </style>
+</head>
+<body>
+
+  <!-- ============================== NAV ============================== -->
+  <nav class="case-nav">
+    <a href="/">&#8592; Portfolio</a>
+    <span class="nav-title">Case Study</span>
+    <a href="https://github.com/ShyamKumar1/silk-house-billing-portal" target="_blank" rel="noopener">GitHub &nearr;</a>
+  </nav>
+
+  <!-- ============================== ARTICLE ============================== -->
+  <article class="case-article">
+
+    <!-- ========== HEADER ========== -->
+    <header class="case-header">
+      <span class="case-category">Full-Stack Business Application</span>
+      <h1>Silk House Billing Portal</h1>
+      <p class="case-tagline">
+        A double-entry accounting system for a 5-firm silk saree business.
+        Automates GST compliance, bank reconciliation, and multi-firm
+        consolidated reporting.
+      </p>
+      <div class="case-meta">
+        <span>&#128197; 2026</span>
+        <span>&#9889; TypeScript &middot; React &middot; Supabase</span>
+        <span>&#128200; Status: <strong style="color:var(--accent)">Live</strong></span>
+      </div>
+    </header>
+
+    <!-- ========== PROBLEM ========== -->
+    <section class="case-section" id="problem">
+      <h2><span class="section-number">01</span> The Problem</h2>
+      <p>
+        A real-world silk saree business running <strong>5 independent firms</strong>
+        (DSS, SMSS, LKC, SDS, NSS) — each with its own bank account, GSTIN, and
+        state registration. Sales are B2C; payment arrives <strong>1–2 months late</strong>.
+        Transactions span both inter-state (IGST) and intra-state (CGST+SGST) tax
+        regimes. The accountant was managing everything with <strong>physical ledgers</strong>.
+      </p>
+      <p>
+        Every month-end meant hours of manual reconciliation, hand-written GST
+        return calculations, and no real-time visibility into debtor positions,
+        firm-level profitability, or tax liability. Errors were common, and
+        cross-firm consolidation was a spreadsheet nightmare.
+      </p>
+      <div class="insight-box insight-box-cyan">
+        <div class="insight-label">Context</div>
+        <p>
+          This wasn't a hypothetical project — it replaced a real, paper-based
+          accounting workflow mid-financial-year for a business handling crores
+          in annual turnover.
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== ARCHITECTURE ========== -->
+    <section class="case-section" id="architecture">
+      <h2><span class="section-number">02</span> Architecture</h2>
+      <p>
+        The system follows a modern full-stack architecture: a React single-page
+        application backed by Supabase (PostgreSQL with Row-Level Security),
+        with an optional Tauri desktop wrapper for offline access.
+      </p>
+
+      <pre class="arch-diagram">┌──────────────────────────────────────────────────────┐
+│                Silk House Portal                      │
+│  ┌────────────────────────────────────────────────┐  │
+│  │           React SPA (Vite + TypeScript)        │  │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐       │  │
+│  │  │ Dashboard │ │Invoicing │ │ Reports  │       │  │
+│  │  └──────────┘ └──────────┘ └──────────┘       │  │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐       │  │
+│  │  │ Purchases│ │   Auth   │ │ Settings │       │  │
+│  │  └──────────┘ └──────────┘ └──────────┘       │  │
+│  └──────────────────┬─────────────────────────────┘  │
+│                     │ HTTP + JWT                      │
+│  ┌──────────────────▼─────────────────────────────┐  │
+│  │          Supabase (PostgreSQL + RLS)            │  │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐       │  │
+│  │  │  Sales   │ │ Returns  │ │  Bank    │       │  │
+│  │  │ Invoices │ │Credit No│ │Transacts │       │  │
+│  │  ├──────────┤ ├──────────┤ ├──────────┤       │  │
+│  │  │Purchases │ │  Firms   │ │   GST    │       │  │
+│  │  │          │ │   (5)    │ │ Returns  │       │  │
+│  │  └──────────┘ └──────────┘ └──────────┘       │  │
+│  └────────────────────────────────────────────────┘  │
+│                                                      │
+│  ┌────────────────────────────────────────────────┐  │
+│  │       Tauri Desktop Wrapper (optional)         │  │
+│  └────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────┘</pre>
+
+      <div class="insight-box insight-box-purple">
+        <div class="insight-label">Design Decision</div>
+        <p>
+          Supabase Row-Level Security was chosen to enforce firm-level data
+          isolation at the database layer — ensuring that even if the front-end
+          had a bug, a user from DSS could never see LKC's transactions.
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== TECH STACK ========== -->
+    <section class="case-section" id="tech-stack">
+      <h2><span class="section-number">03</span> Tech Stack</h2>
+      <p>
+        Every technology was chosen with a specific purpose: type safety across
+        the stack, fast iteration, accessible UI, and proven production databases.
+      </p>
+
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Language</td>
+            <td>TypeScript</td>
+            <td>Full-stack type safety — share types between front-end and database</td>
+          </tr>
+          <tr>
+            <td>Front-end</td>
+            <td>React 19 + Vite</td>
+            <td>Fast dev server, modern React patterns, tree-shakeable builds</td>
+          </tr>
+          <tr>
+            <td>Back-end / Database</td>
+            <td>Supabase (PostgreSQL)</td>
+            <td>Managed Postgres, built-in auth, auto-generated REST API</td>
+          </tr>
+          <tr>
+            <td>ORM</td>
+            <td>Prisma</td>
+            <td>Declarative schema, migrations, type-safe queries</td>
+          </tr>
+          <tr>
+            <td>UI Components</td>
+            <td>Radix UI</td>
+            <td>Accessible, unstyled primitives for modals, selects, dropdowns</td>
+          </tr>
+          <tr>
+            <td>Styling</td>
+            <td>Tailwind CSS</td>
+            <td>Utility-first, consistent design tokens, rapid prototyping</td>
+          </tr>
+          <tr>
+            <td>Testing</td>
+            <td>Vitest</td>
+            <td>50+ tests — components, hooks, lib utilities, page integration</td>
+          </tr>
+          <tr>
+            <td>Desktop</td>
+            <td>Tauri</td>
+            <td>Optional native wrapper for offline access / local backups</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ========== KEY CHALLENGES ========== -->
+    <section class="case-section" id="challenges">
+      <h2><span class="section-number">04</span> Key Challenges</h2>
+
+      <ol class="challenge-list">
+        <li>
+          <strong>1. Double-entry for delayed payments</strong>
+          Every sale books immediate credit to revenue and debit to the debtor's
+          account. Payment reconciliation — which can arrive <em>60 days late</em> —
+          posts against the original invoice. The ledger must show accurate debtor
+          positions at all times, even mid-cycle.
+          <div class="insight-box" style="margin-top:12px;">
+            <div class="insight-label">Solution</div>
+            <p>
+              Each invoice carries a unique payment status derived from linked
+              bank transactions. A materialised view computes real-time ageing
+              summaries for the dashboard without hammering the OLTP tables.
+            </p>
+          </div>
+        </li>
+        <li>
+          <strong>2. Multi-firm consolidation</strong>
+          Five separate GSTINs, bank accounts, and state registrations. Each firm
+          needs its own trial balance while a consolidated view sums across all
+          five. Cross-firm inventory or fund transfers need careful double-sided
+          journal entries.
+          <div class="insight-box insight-box-cyan" style="margin-top:12px;">
+            <div class="insight-label">Solution</div>
+            <p>
+              Every row across all transaction tables is scoped by <code>firm_id</code>.
+              A central <code>firms</code> table drives per-firm dashboards via RLS
+              policies. Consolidated reports are computed by summing across firms
+              with the same SQL views — no separate consolidation logic needed.
+            </p>
+          </div>
+        </li>
+        <li>
+          <strong>3. GST compliance</strong>
+          Every sale must be classified as inter-state (IGST) or intra-state
+          (CGST+SGST) based on the shipping address vs. the firm's registered
+          state. Accurate return filing (GSTR-1, GSTR-3B) depends on perfect
+          classification — a single wrong tax code cascades into penalties.
+          <div class="insight-box insight-box-gold" style="margin-top:12px;">
+            <div class="insight-label">Solution</div>
+            <p>
+              Tax regime is computed automatically from the selected customer's
+              state and the firm's registered state. The UI displays the
+              applicable rates before the invoice is saved, preventing errors
+              at the point of entry.
+            </p>
+          </div>
+        </li>
+        <li>
+          <strong>4. Real business constraints</strong>
+          The system replaced physical ledgers <em>mid-financial-year</em>.
+          Migration had to be lossless — every open invoice, every uncleared
+          cheque, every previous month's return. And the UI had to be intuitive
+          enough for a non-technical accountant to use daily.
+          <div class="insight-box insight-box-purple" style="margin-top:12px;">
+            <div class="insight-label">Solution</div>
+            <p>
+              A structured import process with validation reports, plus close
+              collaboration with the accountant during UAT. The interface uses
+              familiar metaphors (ledger, journal, voucher) and keyboard shortcuts
+              for rapid data entry.
+            </p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ========== KEY STATS ========== -->
+    <section class="case-section" id="stats">
+      <h2><span class="section-number">—</span> By the Numbers</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-value">5</span>
+          <span class="stat-label">Firms (DSS, SMSS, LKC, SDS, NSS)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value cyan">Auto</span>
+          <span class="stat-label">CGST+SGST / IGST on every tx</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value purple">Live</span>
+          <span class="stat-label">Real ledgers, actual accountant</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value gold">50+</span>
+          <span class="stat-label">Vitest tests across the stack</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== RESULTS ========== -->
+    <section class="case-section" id="results">
+      <h2><span class="section-number">05</span> Results &amp; Impact</h2>
+      <p>
+        The portal went from zero to live production in active use by the business
+        accountant. Here's what changed:
+      </p>
+
+      <div class="result-grid">
+        <div class="result-card">
+          <span class="result-icon">&#128221;</span>
+          <span class="result-text">Physical ledgers eliminated for all 5 firms</span>
+        </div>
+        <div class="result-card">
+          <span class="result-icon">&#128200;</span>
+          <span class="result-text">Real-time dashboards: GST liability, sales, bank reconciliation</span>
+        </div>
+        <div class="result-card">
+          <span class="result-icon">&#128230;</span>
+          <span class="result-text">Purchase tracking module added for full-cycle accounting</span>
+        </div>
+        <div class="result-card">
+          <span class="result-icon">&#9000;</span>
+          <span class="result-text">Tauri desktop build for offline access</span>
+        </div>
+        <div class="result-card">
+          <span class="result-icon">&#128274;</span>
+          <span class="result-text">Supabase RLS ensures firm-level data isolation</span>
+        </div>
+        <div class="result-card">
+          <span class="result-icon">&#9989;</span>
+          <span class="result-text">GST return data extracted on demand — no manual calc</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== WHAT I LEARNED ========== -->
+    <section class="case-section" id="learned">
+      <h2><span class="section-number">06</span> What I Learned</h2>
+      <p>
+        Building a real-world accounting system <em>for a real accountant</em>
+        taught me things no tutorial ever could:
+      </p>
+      <ul>
+        <li>
+          <strong>Accounting is not CRUD.</strong> Every transaction has a double-sided
+          effect — a sale isn't just an insert; it's a debit to receivables and a
+          credit to revenue. The data model must mirror double-entry principles
+          faithfully, or the numbers will never balance.
+        </li>
+        <li>
+          <strong>GST is a state-level puzzle.</strong> India's GST regime treats
+          every inter-state sale differently from intra-state. The same product
+          sold to a customer in Maharashtra vs. Tamil Nadu triggers different tax
+          line items. Getting this right required studying actual GST laws, not
+          just reading API docs.
+        </li>
+        <li>
+          <strong>RLS is your best friend.</strong> With five firms sharing one
+          database, Row-Level Security wasn't a nice-to-have — it was the
+          difference between a deployable system and a liability. Every policy
+          was tested with multiple roles before going live.
+        </li>
+        <li>
+          <strong>Non-technical users demand UX rigour.</strong> The accountant
+          doesn't care about the stack. They care that the "Save" button works,
+          that the ledger balances, and that they can find last month's return
+          in two clicks. Testing with the actual end user surfaced more bugs
+          than 50 unit tests ever did.
+        </li>
+      </ul>
+
+      <div class="insight-box">
+        <div class="insight-label">Takeaway</div>
+        <p>
+          The most satisfying line of code I wrote wasn't a clever React hook or
+          a fancy SQL window function. It was the migration script that
+          successfully imported 6 months of physical ledger data — and the
+          accountant's message: <em>"The numbers match."</em>
+        </p>
+      </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="case-footer">
+      <div class="footer-links">
+        <a href="https://github.com/ShyamKumar1/silk-house-billing-portal" target="_blank" rel="noopener">View on GitHub &nearr;</a>
+        <a href="https://shyamkumar.dev" target="_blank" rel="noopener" class="primary-btn">Back to Portfolio &nearr;</a>
+      </div>
+      <a href="/" class="back-link">&larr; All Case Studies</a>
+    </footer>
+
+  </article>
+
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AION — On-Device AI Agent for Android | Case Study</title>
+  <meta name="description" content="AION is an on-device AI agent for Android that sees your screen, reads notifications, sends SMS, places calls, and runs automations — all without a host PC." />
+  <meta property="og:title" content="AION — On-Device AI Agent for Android" />
+  <meta property="og:description" content="An AI agent that lives on your Android device. Sees your screen, reads notifications, sends SMS, places calls, runs automations. All without a host PC." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://shyamkumar.in/case-studies/aion.html" />
+  <meta property="og:site_name" content="Shyam Kumar — Portfolio" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="case-nav">
+    <a href="../index.html">&larr; Back to Portfolio</a>
+    <span class="nav-title">Case Study</span>
+  </nav>
+
+  <!-- Article -->
+  <article class="case-article">
+
+    <!-- Header -->
+    <header class="case-header">
+      <span class="case-category">Mobile AI Agent</span>
+      <h1>AION</h1>
+      <p class="case-tagline">
+        An AI agent that lives on your Android device. Sees your screen, reads notifications,
+        sends SMS, places calls, runs automations. All without a host PC.
+      </p>
+      <div class="case-meta">
+        <span>📱 Kotlin &middot; Android SDK &middot; OpenRouter &middot; llama.cpp &middot; Room DB &middot; MCP &middot; BM25</span>
+        <span>📅 2025–2026</span>
+        <span>⚡ Phase 1 complete &middot; Phases 2–6 in development</span>
+      </div>
+    </header>
+
+    <!-- Problem -->
+    <section class="case-section">
+      <h2><span class="section-number">01</span> Problem</h2>
+      <p>
+        Mobile AI assistants today — Siri, Google Assistant, Bixby — are constrained to
+        narrow, pre-defined intents. They cannot adapt to novel tasks, execute multi-step
+        workflows, or integrate deeply with the operating system. Meanwhile, powerful
+        LLM-based agents require cloud infrastructure and a host PC, negating the
+        mobility advantage of a smartphone.
+      </p>
+      <p>
+        <strong>AION</strong> was conceived to bridge this gap: an autonomous, persistent
+        AI agent that lives <em>on-device</em>, perceives its environment through screen
+        content and notifications, and acts through system APIs — SMS, calls, timers,
+        automations — all without tethering to a desktop.
+      </p>
+    </section>
+
+    <!-- Architecture -->
+    <section class="case-section">
+      <h2><span class="section-number">02</span> Architecture</h2>
+      <p>
+        AION runs as an Android Foreground Service with a persistent agent loop. User
+        input enters through a Jetpack Compose chat UI, flows through the agent loop
+        (context management &amp; intent classification), reaches the dual-engine LLM
+        layer, and then routes to the appropriate skill via BM25 semantic matching.
+      </p>
+
+      <pre class="arch-diagram">
+┌─────────────────────────────────────┐
+│         AION Agent App              │
+│  ┌───────────────────────────────┐  │
+│  │  Chat UI (Jetpack Compose)    │  │
+│  └───────────┬───────────────────┘  │
+│              ▼                       │
+│  ┌───────────────────────────────┐  │
+│  │  Agent Loop                   │  │
+│  │  ┌─────────┐ ┌─────────────┐  │  │
+│  │  │Context  │ │Intent       │  │  │
+│  │  │Manager  │ │Classifier   │  │  │
+│  │  └─────────┘ └──────┬──────┘  │  │
+│  │         ▼           ▼         │  │
+│  │  ┌─────────────────────────┐  │  │
+│  │  │  LLM Engine             │  │  │
+│  │  │  Cloud (OpenRouter)     │  │  │
+│  │  │  Local (llama.cpp)      │  │  │
+│  │  └─────────────────────────┘  │  │
+│  └───────────────────────────────┘  │
+│              ▼                       │
+│  ┌───────────────────────────────┐  │
+│  │  Skill Router (BM25)          │  │
+│  │  ┌──────┐┌──────┐┌────────┐  │  │
+│  │  │SMS   ││Call  ││Notif.  │  │  │
+│  │  │Tool  ││Tool  ││Reader  │  │  │
+│  │  └──────┘└──────┘└────────┘  │  │
+│  │  ┌────────┐┌────────┐       │  │
+│  │  │Screen  ││Timer   │       │  │
+│  │  │Skill   ││Skill   │       │  │
+│  │  └────────┘└────────┘       │  │
+│  └───────────────────────────────┘  │
+│              ▼                       │
+│  ┌───────────────────────────────┐  │
+│  │  Persistence (Room DB)         │  │
+│  │  Memory · Settings · Skills    │  │
+│  └───────────────────────────────┘  │
+└─────────────────────────────────────┘</pre>
+
+      <p>
+        The architecture is modular by design: the <strong>Agent Loop</strong> orchestrates
+        context and intent, the <strong>LLM Engine</strong> supports both cloud (OpenRouter)
+        and local (llama.cpp) inference, and the <strong>Skill Router</strong> uses BM25
+        semantic search to dispatch intent to the correct tool. All state persists via
+        <strong>Room DB</strong>, and the <strong>MCP</strong> layer enables structured
+        tool calling without a host PC.
+      </p>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="case-section">
+      <h2><span class="section-number">03</span> Tech Stack</h2>
+
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Language</td>
+            <td>Kotlin</td>
+          </tr>
+          <tr>
+            <td>UI Framework</td>
+            <td>Jetpack Compose (state management, navigation)</td>
+          </tr>
+          <tr>
+            <td>Cloud LLM</td>
+            <td>OpenRouter API (GPT-4o, Claude, any model)</td>
+          </tr>
+          <tr>
+            <td>Local LLM</td>
+            <td>llama.cpp (on-device inference)</td>
+          </tr>
+          <tr>
+            <td>Persistence</td>
+            <td>Room DB (conversations, encrypted settings)</td>
+          </tr>
+          <tr>
+            <td>Skill Routing</td>
+            <td>BM25 semantic search algorithm</td>
+          </tr>
+          <tr>
+            <td>Tool Protocol</td>
+            <td>MCP (Model Context Protocol, server/client)</td>
+          </tr>
+          <tr>
+            <td>Background Service</td>
+            <td>Android Foreground Service (persistent agent loop)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Key Challenges -->
+    <section class="case-section">
+      <h2><span class="section-number">04</span> Key Challenges</h2>
+
+      <h3>Android Lifecycle Management</h3>
+      <p>
+        Keeping the agent alive through Doze mode, background restrictions, and aggressive
+        battery optimization across OEMs required careful use of Foreground Services,
+        wake locks, and periodic alarms. Tested on <strong>Nothing Phone 2</strong> and
+        <strong>Oppo ColorOS</strong> to validate cross-vendor reliability.
+      </p>
+
+      <h3>On-Device LLM Latency</h3>
+      <p>
+        Running llama.cpp on a phone with acceptable response times demanded aggressive
+        model quantization (Q4_K_M), GPU delegation via Vulkan, and prompt caching.
+        The trade-off between model size and intelligence is an ongoing optimisation.
+      </p>
+
+      <h3>Skill Routing Accuracy vs. Speed</h3>
+      <p>
+        BM25 semantic routing had to balance classification accuracy against near-real-time
+        response latency. Tuning the tokeniser, stop-word lists, and similarity thresholds
+        was essential to prevent misrouted intents without introducing delay.
+      </p>
+
+      <h3>MCP on Android</h3>
+      <p>
+        Building an MCP server that runs directly on Android — without a host PC — required
+        a custom transport layer. The standard HTTP+SSE transport was replaced with an
+        in-process bridge to keep the tool-calling loop local and fast.
+      </p>
+    </section>
+
+    <!-- Results -->
+    <section class="case-section">
+      <h2><span class="section-number">05</span> Results</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-value">6+</span>
+          <span class="stat-label">Phases Planned</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value cyan">Cloud+Local</span>
+          <span class="stat-label">Dual LLM Engine</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value purple">BM25</span>
+          <span class="stat-label">Skill Routing</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value gold">Screenshot</span>
+          <span class="stat-label">Screen Awareness (Ph. 3)</span>
+        </div>
+      </div>
+
+      <ul>
+        <li><strong>Phase 1 stable</strong> on Nothing Phone 2 with production-grade reliability</li>
+        <li><strong>Cloud LLM</strong> response time consistently under 2 seconds</li>
+        <li><strong>SMS tool</strong> with full send / receive capability via Android Telephony APIs</li>
+        <li><strong>Encrypted API key storage</strong> using Android Keystore + Room DB encryption</li>
+        <li><strong>40+ Kotlin source files</strong> organised into a modular, testable architecture</li>
+      </ul>
+
+      <div class="insight-box">
+        <div class="insight-label">Key Insight</div>
+        <p>
+          The dual-LLM architecture gives users the best of both worlds: cloud models for
+          complex reasoning (GPT-4o, Claude) and local inference for privacy-sensitive or
+          offline tasks. The BM25 skill router seamlessly mediates between intent and
+          execution without the user ever thinking about which model is running.
+        </p>
+      </div>
+    </section>
+
+    <!-- What I Learned -->
+    <section class="case-section">
+      <h2><span class="section-number">06</span> What I Learned</h2>
+
+      <div class="insight-box insight-box-cyan">
+        <div class="insight-label">Lifecycle Mastery</div>
+        <p>
+          Building a persistent agent on Android is fundamentally a battle against the OS's
+          battery-saving mechanisms. <strong>Foreground Service + proper lifecycle-aware
+          architecture</strong> is non-negotiable. Every OEM has quirks — test early, test often.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-purple">
+        <div class="insight-label">Local LLM Practicality</div>
+        <p>
+          Running LLMs on-device is <em>feasible today</em> with the right quantisation
+          strategy and GPU acceleration. The latency gap between cloud and local is shrinking,
+          and for many tasks (classification, simple Q&amp;A), local models are already good
+          enough — with the added benefit of zero data leaving the device.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-gold">
+        <div class="insight-label">Modularity Matters</div>
+        <p>
+          The skill-router pattern (BM25 + MCP) proved extremely flexible. Adding a new tool
+          is as simple as writing a Kotlin class, registering it in the skill index, and
+          letting the router handle dispatch. This pattern should generalise well to any
+          on-device agent framework.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="case-footer">
+      <div class="footer-links">
+        <a href="https://github.com/ShyamKumar1/aion-android" target="_blank" rel="noopener noreferrer" class="primary-btn">
+          View on GitHub &nearr;
+        </a>
+        <a href="../index.html">&larr; Back to Portfolio</a>
+      </div>
+      <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+    </footer>
+
+  </article>
+
+</body>
+</html>

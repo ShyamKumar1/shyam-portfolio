@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IntelliCatalog — AI Voice & Chat Assistant for Electronic Parts Catalogs (EPC). Real-time voice and chat assistant powered by LiveKit Agents, Deepgram Nova-3, GPT-4o, and Cartesia Sonic-3 TTS.">
+  <meta property="og:title" content="IntelliCatalog — AI Voice & Chat Assistant for Parts Catalogs">
+  <meta property="og:description" content="A real-time voice and chat assistant for EPC built with LiveKit Agents. Find parts, check availability, navigate catalogs, and place orders using natural language.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://shyam-portfolio.vercel.app/og-intellicatalog.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>IntelliCatalog — Case Study | Shyam Kumar</title>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="case-nav">
+    <a href="../index.html">&larr; Back to Portfolio</a>
+    <span class="nav-title">Case Study</span>
+  </nav>
+
+  <!-- Article -->
+  <article class="case-article">
+
+    <!-- Header -->
+    <header class="case-header">
+      <span class="case-category">Voice AI / Real-Time Agent</span>
+      <h1>IntelliCatalog</h1>
+      <p class="case-tagline">A real-time voice and chat assistant for Electronic Parts Catalogs (EPC) built with LiveKit Agents. Find parts, check availability, navigate catalogs, and place orders using natural language.</p>
+      <div class="case-meta">
+        <span>Stack &middot; Python &middot; LiveKit &middot; Deepgram Nova-3 &middot; GPT-4o &middot; Cartesia Sonic-3 &middot; WebRTC</span>
+        <span>Year &middot; 2026</span>
+        <span>Status &middot; Functional &mdash; full voice pipeline operational</span>
+      </div>
+    </header>
+
+    <!-- Problem -->
+    <section class="case-section">
+      <h2><span class="section-number">01</span>Problem</h2>
+      <p>Automotive and industrial parts catalogs (EPCs) are notoriously complex. Technicians, mechanics, and parts dealers spent minutes navigating clunky search interfaces, filtering through obscure part numbers, and cross-referencing availability across multiple systems. The friction of traditional catalog browsing &mdash; typing exact part numbers, tabbing between categories, and manually checking stock &mdash; slows down every repair or order.</p>
+      <p>The core question: <strong>could a voice-first AI agent make parts catalog interaction as fast and natural as asking a colleague?</strong> Not just searching, but understanding intent, refining across turns, and taking action &mdash; all in real time.</p>
+    </section>
+
+    <!-- Architecture -->
+    <section class="case-section">
+      <h2><span class="section-number">02</span>Architecture</h2>
+      <p>The system routes every user interaction through a LiveKit WebRTC room that chains speech-to-text, LLM reasoning with function calling, and text-to-speech into a seamless real-time pipeline.</p>
+
+<pre class="arch-diagram">User (Voice / Chat)
+    │
+    ▼
+┌────────────────────────────────────────────────┐
+│              LiveKit Room (WebRTC)              │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────┐ │
+│  │  STT     │  │  LLM     │  │  TTS         │ │
+│  │ Deepgram │─▶│ GPT-4o   │─▶│ Cartesia     │ │
+│  │ Nova-3   │  │          │  │ Sonic-3      │ │
+│  └──────────┘  └────┬─────┘  └──────────────┘ │
+│                     │                           │
+│              ┌──────▼──────┐                    │
+│              │  Function    │                    │
+│              │  Calling     │                    │
+│              │  ┌────────┐  │                    │
+│              │  │search  │  │                    │
+│              │  │parts() │  │                    │
+│              │  │details()│ │                    │
+│              │  │cart()  │  │                    │
+│              │  │avail() │  │                    │
+│              │  └────────┘  │                    │
+│              └──────────────┘                    │
+└────────────────────────────────────────────────┘
+    │
+    ▼
+┌────────────────────────────────────────────────┐
+│              Parts Catalog (EPC)                │
+│  • Part search &amp; lookup                         │
+│  • Availability &amp; supersession                  │
+│  • Cart &amp; ordering                              │
+│  • Category navigation                          │
+│  • Multi-turn context                           │
+└────────────────────────────────────────────────┘</pre>
+
+      <div class="insight-box insight-box-cyan">
+        <div class="insight-label">Design Decision</div>
+        <p>LiveKit was chosen over raw WebRTC or a simple HTTP pipeline because it provides managed STT/TTS agent integration out of the box, handles room lifecycle and reconnection, and lets us swap model providers without touching transport code.</p>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="case-section">
+      <h2><span class="section-number">03</span>Tech Stack</h2>
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Chosen Technology</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Orchestration</td>
+            <td>Python</td>
+            <td>Application logic, agent pipeline, state management</td>
+          </tr>
+          <tr>
+            <td>Real-Time Transport</td>
+            <td>LiveKit Agents</td>
+            <td>WebRTC communication, room management, agent lifecycle</td>
+          </tr>
+          <tr>
+            <td>Speech-to-Text</td>
+            <td>Deepgram Nova-3</td>
+            <td>Low-latency speech recognition with high accuracy</td>
+          </tr>
+          <tr>
+            <td>Language Model</td>
+            <td>GPT-4o</td>
+            <td>Natural language understanding, intent classification, function calling</td>
+          </tr>
+          <tr>
+            <td>Text-to-Speech</td>
+            <td>Cartesia Sonic-3</td>
+            <td>Expressive, natural-sounding voice output</td>
+          </tr>
+          <tr>
+            <td>Function Calling</td>
+            <td>OpenAI Function API</td>
+            <td>Search parts, get details, manage cart, check availability</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="insight-box">
+        <div class="insight-label">Why This Stack</div>
+        <p>Each component was chosen for <strong>latency</strong>. Deepgram Nova-3 delivers sub-300ms STT. GPT-4o classifies intent and triggers function calls on the same turn. Cartesia Sonic-3 streams TTS at speeds that don't bottleneck the audio pipeline. Together they keep the voice round trip under a second.</p>
+      </div>
+    </section>
+
+    <!-- Key Challenges -->
+    <section class="case-section">
+      <h2><span class="section-number">04</span>Key Challenges</h2>
+
+      <h3>1. Real-time latency</h3>
+      <p>Voice conversations require sub-300ms STT &rarr; LLM &rarr; TTS round trip. Optimizing each stage without sacrificing quality was a tight constraint. We tuned Deepgram's endpointing sensitivity, reduced LLM response tokens via prompt compression, and streamed TTS in parallel with LLM response generation.</p>
+
+      <h3>2. Function calling reliability</h3>
+      <p>The LLM must correctly parse part queries and call the right catalog functions. A false positive &mdash; calling the wrong function or hallucinating a part number &mdash; would show incorrect results. We solved this with strict function schemas, few-shot examples in the system prompt, and validation layers that reject unsupported function calls before reaching the catalog API.</p>
+
+      <h3>3. Multi-turn context</h3>
+      <p>Users frequently refine searches across turns: <em>"Find oil filters"</em> &rarr; <em>"for Traxion 5200"</em> &rarr; <em>"how much?"</em>. Each turn must carry context. We maintain a conversation history scoped to the LiveKit room session and inject it into every LLM request, with an automatic summary mechanism to prevent context window overflow on long sessions.</p>
+
+      <h3>4. WebRTC complexity</h3>
+      <p>LiveKit handles the WebRTC transport, but configuring STT/TTS agent pipelines and managing room lifecycle added complexity. Audio format mismatches, network jitter, and stream synchronization all had to be tested across different browsers and network conditions.</p>
+
+      <div class="insight-box insight-box-purple">
+        <div class="insight-label">Lesson Learned</div>
+        <p>Building a test harness that simulated partial audio, network degradation, and rapid-turn interactions was invaluable. Real-time voice agents behave differently than request-response APIs &mdash; you can't just unit-test the LLM and call it done.</p>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="case-section">
+      <h2><span class="section-number">05</span>Results</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-value">3</span>
+          <span class="stat-label">Pipeline: STT &rarr; LLM &rarr; TTS</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value cyan">Multi-Turn</span>
+          <span class="stat-label">Context across interactions</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value purple">Voice+Chat</span>
+          <span class="stat-label">Dual-mode interface</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value gold">Real-Time</span>
+          <span class="stat-label">WebRTC sub-second audio</span>
+        </div>
+      </div>
+
+      <ul>
+        <li><strong>Complete voice-first EPC assistant</strong> with a chat fallback mode &mdash; users can speak or type interchangeably within the same session.</li>
+        <li><strong>Natural language part search</strong> &mdash; "find the oil filter for a 2022 Traxion 5200" returns the correct part without needing the exact part number.</li>
+        <li><strong>Availability checking and cart management</strong> &mdash; users can ask "is it in stock?" or "add two to my cart" and the agent handles the entire lifecycle.</li>
+        <li><strong>Real-time voice</strong> with Deepgram Nova-3 (STT) + Cartesia Sonic-3 (TTS) delivering natural, low-latency conversations.</li>
+        <li><strong>Deployable as a LiveKit agent</strong> &mdash; runs anywhere LiveKit runs, from a local machine to a production Kubernetes cluster.</li>
+      </ul>
+    </section>
+
+    <!-- What I Learned -->
+    <section class="case-section">
+      <h2><span class="section-number">06</span>What I Learned</h2>
+
+      <p>This project was a deep dive into the practical realities of building production-grade voice AI. Some takeaways:</p>
+
+      <ul>
+        <li><strong>Latency is a product feature.</strong> A voice agent that pauses for 800ms feels broken. Every millisecond in the pipeline matters &mdash; from model selection to prompt design to streaming strategy.</li>
+        <li><strong>Voice-first uncovers usability patterns that chat doesn't.</strong> Users speak differently than they type &mdash; more fragmentary, more VUI-style commands. The system prompt and function calling had to be tuned for this different input modality.</li>
+        <li><strong>WebRTC and audio pipelines demand tooling.</strong> Debugging a voice call is harder than debugging an HTTP request. We invested in room logging, audio file capture for replay, and structured event tracing.</li>
+        <li><strong>Function calling is the bridge.</strong> The LLM is powerful only if it can reliably drive real-world actions. Getting function calling right &mdash; schemas, validation, error recovery &mdash; was the most important engineering work on the project.</li>
+      </ul>
+
+      <div class="insight-box insight-box-gold">
+        <div class="insight-label">What's Next</div>
+        <p>Multilingual support, agentic navigation (the LLM drives multi-step workflows like "check stock for all Traxion 5000 filters and add the cheapest to cart"), and a WebSocket-based chat fallback for environments without microphone access.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="case-footer">
+      <div class="footer-links">
+        <a href="https://github.com/ShyamKumar1/intellicatalog-livekit" class="primary-btn" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+        <a href="../index.html">Back to Portfolio</a>
+      </div>
+      <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+    </footer>
+
+  </article>
+
+</body>
+</html>

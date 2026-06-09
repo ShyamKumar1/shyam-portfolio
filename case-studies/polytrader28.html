@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PolyTrader28 — A Binance-Polymarket crypto arbitrage bot exploiting pricing discrepancies between Binance spot and Polymarket 15-minute prediction market contracts using dual arbitrage strategies. Case study by Shyam Kumar.">
+  <meta property="og:title" content="PolyTrader28 — Binance-Polymarket Crypto Arbitrage Bot">
+  <meta property="og:description" content="Exploits pricing discrepancies between Binance spot prices and Polymarket 15-minute prediction market contracts using dual arbitrage strategies. Built with Python, WebSocket, and Flask.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://shyamkumar.in/assets/og-polytrader28.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>PolyTrader28 — Binance-Polymarket Crypto Arbitrage Bot | Shyam Kumar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Override header gradient to gold/amber for this case study */
+    .case-header h1 {
+      background: linear-gradient(135deg, #FFD700, #FF8C00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .case-category {
+      background: rgba(255, 215, 0, 0.08);
+      color: var(--accent-gold);
+      border-color: rgba(255, 215, 0, 0.15);
+    }
+    .case-section h2 .section-number { color: var(--accent-gold); }
+    .arch-diagram { color: #FFD700; }
+    .stat-card .stat-value { color: var(--accent-gold); }
+    .case-footer .footer-links a:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      background: rgba(255, 215, 0, 0.08);
+    }
+    .case-footer .footer-links a.primary-btn {
+      background: rgba(255, 215, 0, 0.1);
+      border-color: rgba(255, 215, 0, 0.3);
+      color: var(--accent-gold);
+    }
+    .case-footer .footer-links a.primary-btn:hover {
+      background: rgba(255, 215, 0, 0.2);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+    }
+    .case-nav a:hover { color: var(--accent-gold); }
+    ::selection { background: #FFD700; color: #000; }
+    .code-inline {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--accent-gold);
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Navigation Bar -->
+  <nav class="case-nav">
+    <a href="https://shyamkumar.in/portfolio">&larr; Back to Portfolio</a>
+    <span class="nav-title">PolyTrader28</span>
+  </nav>
+
+  <!-- Article -->
+  <article class="case-article">
+
+    <!-- Header -->
+    <header class="case-header">
+      <span class="case-category">Trading Bot / DeFi</span>
+      <h1>PolyTrader28</h1>
+      <p class="case-tagline">
+        Exploits pricing discrepancies between Binance spot prices and Polymarket 15-minute prediction market contracts using dual arbitrage strategies.
+      </p>
+      <div class="case-meta">
+        <span>&#128197; 2026</span>
+        <span>&#128268; Production-ready</span>
+        <span>&#128200; Dry-run &amp; Live mode</span>
+        <span><a href="https://github.com/ShyamKumar1/PolyTrader28" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='#FFD700'" onmouseout="this.style.color='var(--text-muted)'">&#128279; GitHub</a></span>
+      </div>
+    </header>
+
+    <!-- Problem -->
+    <section class="case-section">
+      <h2><span class="section-number">01</span> The Problem</h2>
+      <p>
+        Cryptocurrency markets are fragmented. The same asset — Bitcoin or Ethereum — trades at slightly different prices across
+        different exchanges, and <strong>prediction markets</strong> add another dimension of price discovery entirely. Polymarket's
+        15-minute binary contracts (e.g. "Will BTC exceed $85,000 at 14:30 UTC?") create a unique arbitrage opportunity: their
+        settlement price is pinned to the Binance spot price at expiry, but in the minutes before settlement the contract price
+        drifts due to trader sentiment, liquidity imbalances, and information asymmetry.
+      </p>
+      <p>
+        The problem is <strong>speed</strong>. These windows last seconds, not minutes. A manual trader simply cannot monitor
+        both venues, calculate fair value, and execute an order before the opportunity vanishes. PolyTrader28 solves this by
+        coupling real-time WebSocket streams from both platforms with algorithmic strategy execution — all in sub-second loops.
+      </p>
+    </section>
+
+    <!-- Architecture -->
+    <section class="case-section">
+      <h2><span class="section-number">02</span> Architecture</h2>
+      <p>
+        PolyTrader28 is organized into four logical layers, each with clear responsibilities. Data ingestion runs in
+        separate asyncio tasks, the strategy layer processes signals synchronously, and the execution layer manages
+        risk and order lifecycles.
+      </p>
+
+      <pre class="arch-diagram">PolyTrader28/
+│
+├── Data Layer
+│   ├── binance_stream.py    — WebSocket client for live BTC/ETH prices
+│   └── polymarket_api.py    — Polymarket CLOB V2 + Gamma API client
+│
+├── Strategy Layer
+│   ├── price_lag.py         — Strategy A: Time arbitrage (Binance vs Polymarket)
+│   └── complete_set.py      — Strategy B: Risk-free YES+NO complete-set arbitrage
+│
+├── Execution Layer
+│   ├── order_manager.py     — Order placement, fill monitoring, position management
+│   └── risk_manager.py      — Position sizing, stop-loss, drawdown limits, compounding
+│
+├── Python Files
+│   ├── polymarket_bot.py    — Main orchestrator — main loop, lifecycle, signal handling
+│   ├── config.py            — Configuration loaded from .env (singleton)
+│   ├── models.py            — SQLite database layer (trades, equity, ticks, opportunities)
+│   └── dashboard.py         — Flask web dashboard + REST API
+│
+└── Utilities
+    ├── logger.py            — Rotating file + console logger
+    └── telegram_alerts.py   — Telegram bot notifications</pre>
+
+      <div class="insight-box insight-box-gold">
+        <span class="insight-label">&#9889; Design Principle</span>
+        <p>
+          Every layer is independently testable. The data layer can be swapped for a backtest feed, strategies operate
+          on a generic <span class="code-inline">PriceSignal</span> interface, and the execution layer enforces risk limits
+          before any order reaches the exchange. This separation made the backtesting engine trivial to build — it just
+          replaces the WebSocket streams with historical tick data.
+        </p>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="case-section">
+      <h2><span class="section-number">03</span> Tech Stack</h2>
+      <p>
+        Every component was chosen for <strong>low latency</strong>, <strong>reliability</strong>, and
+        <strong>easy debugging</strong>. Python 3.14's improved asyncio performance made it viable for real-time
+        trading without dropping into C++ or Rust.
+      </p>
+
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Technology</th>
+            <th>Role</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Python 3.14</td>
+            <td>Core runtime</td>
+            <td>Asyncio-native, fast dict/list, excellent library ecosystem</td>
+          </tr>
+          <tr>
+            <td>Binance WebSocket</td>
+            <td>Live price feed</td>
+            <td>100ms granularity BTC/ETH streams, low-latency push</td>
+          </tr>
+          <tr>
+            <td>Polymarket CLOB V2 SDK</td>
+            <td>Order book &amp; execution</td>
+            <td>Official SDK for order placement, fills, positions</td>
+          </tr>
+          <tr>
+            <td>Flask</td>
+            <td>Dashboard + REST API</td>
+            <td>Lightweight, well-understood, easy to extend</td>
+          </tr>
+          <tr>
+            <td>SQLite</td>
+            <td>Persistence</td>
+            <td>Zero-config, sufficient for single-instance trading</td>
+          </tr>
+          <tr>
+            <td>Telegram Bot API</td>
+            <td>Alerts &amp; notifications</td>
+            <td>Mobile push for fills, errors, opportunities</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Key Challenges -->
+    <section class="case-section">
+      <h2><span class="section-number">04</span> Key Challenges</h2>
+
+      <h3>&#9881; 1. Dual WebSocket Management</h3>
+      <p>
+        Maintaining persistent connections to both Binance and Polymarket simultaneously is non-trivial. One stale
+        connection can miss an entire arbitrage window. The solution uses a custom reconnection loop with exponential
+        backoff, heartbeat pings every 10 seconds, and a health-check thread that force-restarts a stream if no data
+        arrives for 30 seconds. Connection state is logged to SQLite for post-mortem debugging.
+      </p>
+
+      <h3>&#9200; 2. Strategy Timing</h3>
+      <p>
+        Polymarket's 15-minute contracts require <strong>millisecond precision</strong>. A price discrepancy that exists
+        at <em>t</em> = 0 can vanish by <em>t</em> = 0.5 seconds. The entire pipeline — price detection &rarr; signal
+        generation &rarr; order placement — must complete in under 200ms. This meant avoiding synchronous I/O in the
+        critical path, pre-computing contract metadata at startup, and batching order submissions.
+      </p>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#128640; Optimization</span>
+        <p>
+          The hot loop is written entirely in asyncio with zero blocking calls. Configuration is loaded once into a
+          frozen dataclass, contract lookups use an in-memory dict indexed by token ID, and order payloads are
+          pre-serialized. A full iteration (both exchanges checked, both strategies evaluated) averages 85ms on a
+          standard VPS.
+        </p>
+      </div>
+
+      <h3>&#128737; 3. Risk Management</h3>
+      <p>
+        Crypto trading has black-swan events. The risk manager must handle exchange outages, rapid price movements,
+        Polymarket settlement failures, and gas price spikes. Position sizing uses the <strong>Kelly criterion</strong>
+        to optimize growth while preventing ruin. Circuit breakers pause trading if drawdown exceeds 15% in a single
+        session or if the exchange API returns unexpected errors. All positions are limited to a configurable fraction
+        of the portfolio (default: 2% per position).
+      </p>
+
+      <h3>&#128202; 4. Backtesting Accuracy</h3>
+      <p>
+        Historical backtesting must account for Polymarket's unique settlement mechanism, not just price movements.
+        Slippage, fill probability, and gas costs must all be modeled. The backtesting engine replays tick data through
+        the same strategy code used in production, then compares executed vs. ideal fills using a configurable slippage
+        model. Results are output as PNG equity curves and CSV trade logs.
+      </p>
+    </section>
+
+    <!-- Stat Cards -->
+    <section class="case-section">
+      <h2><span class="section-number">05</span> Results</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-value gold">2</span>
+          <span class="stat-label">Strategies</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value gold">Real-Time</span>
+          <span class="stat-label">Dual WebSocket Feeds</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value gold">Risk-Controlled</span>
+          <span class="stat-label">Kelly Sizing &amp; Circuit Breakers</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value gold">Backtesting</span>
+          <span class="stat-label">Full Engine w/ Chart Output</span>
+        </div>
+      </div>
+
+      <p>
+        PolyTrader28 is production-ready. The dual-strategy arbitrage engine operates in both dry-run (paper trading)
+        and live mode. The Flask dashboard provides real-time P&amp;L, open positions, and opportunity logs. The
+        backtesting engine replays historical data through the same strategy code, generating equity curves and
+        CSV trade logs for analysis.
+      </p>
+
+      <ul>
+        <li><strong>Dual strategy arbitrage engine</strong> — Time-lag (Strategy A) and complete-set (Strategy B) both operational</li>
+        <li><strong>WebSocket pipeline</strong> — Automatic reconnection with exponential backoff and health monitoring</li>
+        <li><strong>Flask dashboard</strong> — Real-time P&amp;L, trading activity, and system health at a glance</li>
+        <li><strong>Backtesting engine</strong> — Historical replay with slippage modeling and PNG equity curve output</li>
+        <li><strong>Risk management</strong> — Kelly position sizing, drawdown limits, and automated circuit breakers</li>
+        <li><strong>Telegram alerts</strong> — Instant push notifications for fills, errors, and detected opportunities</li>
+      </ul>
+    </section>
+
+    <!-- What I Learned -->
+    <section class="case-section">
+      <h2><span class="section-number">06</span> What I Learned</h2>
+
+      <p>
+        Building PolyTrader28 was a deep dive into the realities of algorithmic trading — far removed from the
+        simplified models in textbooks. Three lessons stand out:
+      </p>
+
+      <div class="insight-box">
+        <span class="insight-label">&#128218; Lesson 1</span>
+        <p>
+          <strong>Latency is architecture, not optimization.</strong> You can't bolt speed onto a synchronous design.
+          The entire data path — from WebSocket message to strategy decision — must be non-blocking from day one.
+          Thread-pools and queues add unpredictable jitter.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#128218; Lesson 2</span>
+        <p>
+          <strong>Prediction market arbitrage is fundamentally different from CEX arbitrage.</strong> Settlement mechanics,
+          binary outcomes, and the fixed 15-minute expiry window create an entirely different risk profile. You're not
+          betting on direction — you're betting on the efficiency of the market's pricing mechanism.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-purple">
+        <span class="insight-label">&#128218; Lesson 3</span>
+        <p>
+          <strong>Backtesting is a simulation of your model, not reality.</strong> Slippage, fill probability, gas costs,
+          and exchange latency all compound in ways that simple historical replay cannot capture. PolyTrader28's
+          configurable slippage model was essential — but even then, the only test that matters is live trading
+          with small capital.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="case-footer">
+      <div class="footer-links">
+        <a href="https://github.com/ShyamKumar1/PolyTrader28" target="_blank" rel="noopener" class="primary-btn">&#128279; View on GitHub</a>
+        <a href="https://shyamkumar.in/portfolio" target="_blank" rel="noopener">&#128279; Back to Portfolio</a>
+      </div>
+      <a href="https://shyamkumar.in" class="back-link">&larr; shyamkumar.in</a>
+    </footer>
+
+  </article>
+
+</body>
+</html>
