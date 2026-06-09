@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Code Evaluator — A multi-dimensional code quality framework for automated evaluation of AI-generated code across correctness, edge cases, performance, and code quality. Inspired by Labelbox/Scale AI pipelines. Case study by Shyam Kumar.">
+  <meta property="og:title" content="AI Code Evaluator — Multi-Dimensional Code Quality Framework">
+  <meta property="og:description" content="Automated evaluation for AI-generated code scoring across correctness, edge cases, performance, and code quality. Inspired by Labelbox/Scale AI pipelines.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://shyamkumar.in/assets/og-code-evaluator.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>AI Code Evaluator — Multi-Dimensional Code Quality Framework | Shyam Kumar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Override header gradient to cyan/teal for this case study */
+    .case-header h1 {
+      background: linear-gradient(135deg, #00E5FF, #00BFA5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .case-category {
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--accent-cyan);
+      border-color: rgba(0, 229, 255, 0.15);
+    }
+    .case-section h2 .section-number { color: var(--accent-cyan); }
+    .arch-diagram { color: #00E5FF; }
+    .stat-card .stat-value { color: var(--accent-cyan); }
+    .case-footer .footer-links a:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.08);
+    }
+    .case-footer .footer-links a.primary-btn {
+      background: rgba(0, 229, 255, 0.1);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: var(--accent-cyan);
+    }
+    .case-footer .footer-links a.primary-btn:hover {
+      background: rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+    }
+    .case-nav a:hover { color: var(--accent-cyan); }
+    ::selection { background: #00E5FF; color: #000; }
+    .code-inline {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--accent-cyan);
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Navigation Bar -->
+  <nav class="case-nav">
+    <a href="https://shyamkumar.in/portfolio">&larr; Back to Portfolio</a>
+    <span class="nav-title">AI Code Evaluator</span>
+  </nav>
+
+  <!-- Article -->
+  <article class="case-article">
+
+    <!-- Header -->
+    <header class="case-header">
+      <span class="case-category">AI Evaluation / Benchmarking</span>
+      <h1>AI Code Evaluator</h1>
+      <p class="case-tagline">
+        Automated evaluation for AI-generated code scoring across correctness, edge cases, performance, and code quality. Inspired by Labelbox and Scale AI evaluation pipelines.
+      </p>
+      <div class="case-meta">
+        <span>&#128197; 2025–2026</span>
+        <span>&#128268; Stable</span>
+        <span>&#128200; 4 Weighted Dimensions</span>
+        <span><a href="https://github.com/ShyamKumar1/ai-code-evaluator" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='#00E5FF'" onmouseout="this.style.color='var(--text-muted)'">&#128279; GitHub</a></span>
+      </div>
+    </header>
+
+    <!-- Problem -->
+    <section class="case-section">
+      <h2><span class="section-number">01</span> The Problem</h2>
+      <p>
+        Large language models can now generate code that <em>looks</em> correct — but appearances are deceiving. A
+        generated function might pass basic tests yet fail catastrophically on edge cases, exhibit quadratic
+        complexity where linear suffices, or lack the documentation and type safety needed for production use.
+        Manual review of AI-generated code doesn't scale, and simple pass/fail testing misses the nuance that
+        separates a toy solution from a shippable one.
+      </p>
+      <p>
+        The fundamental challenge is <strong>multi-dimensional evaluation</strong>. A code submission can be:
+        correct but slow, fast but undocumented, well-structured but fragile on edge inputs. Existing tools like
+        <strong>Labelbox</strong> and <strong>Scale AI</strong> pioneered automated evaluation for data-labeling
+        quality — but the code domain demanded its own framework. The AI Code Evaluator fills this gap: a
+        systematic, weighted scoring engine that measures AI-generated code across four orthogonal axes and
+        produces a single interpretable quality score.
+      </p>
+    </section>
+
+    <!-- Architecture -->
+    <section class="case-section">
+      <h2><span class="section-number">02</span> Architecture</h2>
+      <p>
+        The framework is designed as a modular pipeline: test cases are defined in YAML, the scoring engine
+        runs each submission through all four dimensions, and results are aggregated into a 0–100 score.
+        Each dimension is independently configurable, allowing different problem domains to re-weight criteria
+        without modifying core logic.
+      </p>
+
+      <pre class="arch-diagram">Evaluator Engine
+├── Correctness (40%) — Standard test cases
+├── Edge Cases    (25%) — Boundaries, empty, large inputs
+├── Performance   (20%) — Execution speed, algorithmic efficiency
+└── Code Quality  (15%) — Docstrings, type hints, naming, structure
+    │
+    ▼
+Benchmark Runner → Test Cases + Scoring Engine
+    │
+    ▼
+Report Generator → JSON + Markdown
+    
+CI: GitHub Actions (automated runs)</pre>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#9889; Design Principle</span>
+        <p>
+          Evaluation must be <strong>deterministic</strong> and <strong>reproducible</strong>. Every test case
+          is serialised in YAML, every run logs the exact environment and seed, and the scoring engine is
+          pure Python with no randomness. This means two runs of the same submission always produce the same
+          score — critical for benchmarking model iterations or tracking quality over time.
+        </p>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="case-section">
+      <h2><span class="section-number">03</span> Tech Stack</h2>
+      <p>
+        The stack prioritises <strong>portability</strong>, <strong>automation</strong>, and
+        <strong>clear output</strong>. YAML keeps test-case definitions human-readable and version-controllable;
+        GitHub Actions makes evaluation a push-button CI process; and dual-format reporting (JSON + Markdown)
+        serves both automated consumers and human reviewers.
+      </p>
+
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Technology</th>
+            <th>Role</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Python 3.11+</td>
+            <td>Core runtime</td>
+            <td>Rich typing, static analysis hooks, broad ML/AI ecosystem</td>
+          </tr>
+          <tr>
+            <td>PyYAML</td>
+            <td>Test-case configuration</td>
+            <td>Human-readable, Git-friendly, easy to extend per problem domain</td>
+          </tr>
+          <tr>
+            <td>GitHub Actions CI</td>
+            <td>Automated evaluation runs</td>
+            <td>Trigger on push/PR, integrate badge into README, no infra to manage</td>
+          </tr>
+          <tr>
+            <td>JSON + Markdown reports</td>
+            <td>Dual-format output</td>
+            <td>JSON for machine parsing / dashboards; Markdown for PR comments and wikis</td>
+          </tr>
+          <tr>
+            <td>Static analysis integration</td>
+            <td>Code quality signals</td>
+            <td>mypy, pylint, flake8 metrics feed into the Code Quality dimension</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Key Challenges -->
+    <section class="case-section">
+      <h2><span class="section-number">04</span> Key Challenges</h2>
+
+      <h3>&#127922; 1. AI Code Is Fundamentally Unpredictable</h3>
+      <p>
+        Human-written code follows consistent style patterns; AI-generated code varies wildly between
+        models, prompts, and even runs with identical inputs. A framework that assumes standard indentation,
+        conventional naming, or idiomatic Python will penalise valid-but-unusual solutions. The evaluator
+        must be <strong>model-agnostic</strong>: it scores the <em>functional properties</em> of the code
+        (does it run? is it fast? is it safe?) without assuming how it was produced.
+        This meant designing the Correctness and Edge Case dimensions to reason about runtime behaviour
+        rather than syntax, and weighting style heuristics conservatively.
+      </p>
+
+      <h3>&#127980; 2. Automatic Edge-Case Generation</h3>
+      <p>
+        A robust evaluation must test boundary conditions: empty inputs, negative numbers, Unicode strings,
+        maximum recursion depth, concurrent calls. Hand-writing these for every problem doesn't scale. The
+        framework includes an <strong>edge-case generator</strong> that analyses the function signature and
+        type hints to produce a combinatorial suite of boundary inputs per problem domain. For example, a
+        sort function receives an empty list, a single-element list, a reversed list, a list of duplicates,
+        a list of mixed types (if untyped), and a list at maximum recursion depth. The generator is
+        parameterised so domain experts can extend it with domain-specific cases.
+      </p>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#128640; Implementation Detail</span>
+        <p>
+          Edge-case generation uses a <strong>type-based strategy table</strong>. For <span class="code-inline">int</span>
+          parameters it generates 0, -1, 2<sup>31</sup>-1, and typical values. For <span class="code-inline">str</span>
+          it generates empty string, single character, very long string (~10K chars), and Unicode mixed-script
+          text. The combinatorics are pruned by a configurable limit to keep total test time bounded.
+        </p>
+      </div>
+
+      <h3>&#128202; 3. Performance Isolation</h3>
+      <p>
+        Measuring algorithm speed in Python is noisy. Garbage collection, OS scheduling, CPU throttling, and
+        even the phase of the moon can skew timing results by 10–30%. The framework addresses this with
+        <strong>statistical significance</strong>: each performance test runs multiple iterations (default 10),
+        discards the fastest and slowest, takes the median, and compares against a pre-recorded baseline.
+        A submission is only penalised if the 95% confidence interval of its execution time lies strictly
+        above the baseline. This approach eliminates most noise while catching genuine inefficiency — for
+        example, a solution using <span class="code-inline">list.insert(0, ...)</span> repeatedly instead of
+        a <span class="code-inline">collections.deque</span>.
+      </p>
+
+      <h3>&#128220; 4. Automated Code-Quality Heuristics</h3>
+      <p>
+        Some aspects of code quality are straightforward to measure: presence of docstrings, type hints,
+        meaningful identifiers, cyclomatic complexity. But <strong>design patterns</strong> — proper use of
+        abstractions, separation of concerns, composability — resist automated measurement. The framework
+        uses a <strong>heuristic scoring layer</strong> that checks for AST-level patterns (function length
+        < 40 lines, branching factor < 8, consistent return types) and awards partial credit based on a
+        weighted rubric. These heuristics are transparent and configurable per problem, and the scoring
+        rationale is included in the Markdown report so a human reviewer can override if needed.
+      </p>
+    </section>
+
+    <!-- Stat Cards -->
+    <section class="case-section">
+      <h2><span class="section-number">05</span> Results</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-value">4</span>
+          <span class="stat-label">Scoring Dimensions</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">Weighted</span>
+          <span class="stat-label">Configurable Weights</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">2</span>
+          <span class="stat-label">Report Formats (JSON + MD)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">CI</span>
+          <span class="stat-label">GitHub Actions Automated</span>
+        </div>
+      </div>
+
+      <p>
+        The AI Code Evaluator produces a single 0–100 score from four weighted dimensions, enabling
+        side-by-side comparison of good versus flawed solutions. The dual-format output means the same
+        evaluation run feeds both a CI badge in the project README and a detailed report attached to a
+        PR. The architecture directly mirrors production evaluation pipelines at <strong>Labelbox</strong>
+        and <strong>Scale AI</strong>, adapted for code rather than data-labelling quality.
+      </p>
+
+      <ul>
+        <li><strong>Unified scoring model</strong> — Single 0–100 score aggregating correctness, edge cases, performance, and code quality</li>
+        <li><strong>YAML-defined test suites</strong> — Human-readable, version-controlled, extendable per problem domain</li>
+        <li><strong>Automated edge-case generation</strong> — Type-driven boundary input generation with configurable pruning</li>
+        <li><strong>Statistical performance analysis</strong> — Multi-iteration median timing with confidence intervals eliminates noise</li>
+        <li><strong>Dual-format reporting</strong> — Structured JSON for dashboards and Markdown for human review</li>
+        <li><strong>CI-native integration</strong> — GitHub Actions badge, automated runs on push/PR, no infrastructure overhead</li>
+      </ul>
+    </section>
+
+    <!-- What I Learned -->
+    <section class="case-section">
+      <h2><span class="section-number">06</span> What I Learned</h2>
+
+      <p>
+        Building an automated code evaluator revealed just how much tacit knowledge goes into human code
+        review — and how systematically it can be encoded. Three takeaways shaped my approach to AI
+        evaluation infrastructure:
+      </p>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#128218; Lesson 1</span>
+        <p>
+          <strong>Evaluation frameworks are products.</strong> The consumer of a score is not a machine —
+          it's a developer, a team lead, or a CI pipeline. Every output must be interpretable: not just
+          <em>what</em> the score is, but <em>why</em>. The Markdown report that breaks down each dimension
+          with the specific failing test cases turned out to be more valuable than the aggregate score
+          itself. Transparent, auditable evaluation builds trust in automated scoring.
+        </p>
+      </div>
+
+      <div class="insight-box">
+        <span class="insight-label">&#128218; Lesson 2</span>
+        <p>
+          <strong>Weighting is a policy decision, not a technical one.</strong> Should performance be worth
+          20% or 30%? Should code quality ever outweigh correctness for a bootcamp submission? There is no
+          universal answer. The framework's key architectural insight is making weights <strong>external
+          configuration</strong> in YAML rather than hard-coded constants. Different organisations, courses,
+          or problem domains can define their own weighting profiles without modifying a single line of
+          Python.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-purple">
+        <span class="insight-label">&#128218; Lesson 3</span>
+        <p>
+          <strong>AI evaluation is a different problem from human evaluation.</strong> When a human reviews
+          code, they can infer intent — "this variable name is confusing but I see what you mean." An
+          automated evaluator has no such luxury. Every heuristic is a leaky abstraction. The most robust
+          parts of the framework are the functional tests (correctness, edge cases) because they operate on
+          <em>behaviour</em> rather than <em>form</em>. The code quality dimension is useful as a signal,
+          but it should always be presented with the caveat that it measures <em>convention compliance</em>,
+          not <em>design quality</em>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="case-footer">
+      <div class="footer-links">
+        <a href="https://github.com/ShyamKumar1/ai-code-evaluator" target="_blank" rel="noopener" class="primary-btn">&#128279; View on GitHub</a>
+        <a href="https://shyamkumar.in/portfolio" target="_blank" rel="noopener">&#128279; Back to Portfolio</a>
+      </div>
+      <a href="https://shyamkumar.in" class="back-link">&larr; shyamkumar.in</a>
+      <div class="private-note" style="margin-top:20px;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);font-size:12px;color:#555;">
+        🔒 Source code is private. This case study details the architecture, tech stack, and engineering decisions. Access granted on reasonable request.
+      </div>
+    </footer>
+
+  </article>
+
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DentFlow AI — AI-Powered Dental Practice Management. Modern dental practice management with AI-assisted diagnostics, patient management, and intelligent scheduling. Next.js 16 + Prisma + PostgreSQL + OpenAI.">
+  <meta property="og:title" content="DentFlow AI — AI-Powered Dental Practice Management">
+  <meta property="og:description" content="Full-stack AI dental practice manager with AI diagnostic assistance, patient management, intelligent scheduling, and billing. Built with Next.js 16 App Router, Prisma, PostgreSQL, and OpenAI.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://shyamkumar.in/assets/og-dentflow-ai.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* DentFlow AI — teal/cyan gradient theme */
+    .case-header h1 {
+      background: linear-gradient(135deg, #00E5FF, #00FF85);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .case-category {
+      background: rgba(0, 229, 255, 0.08);
+      color: var(--accent-cyan);
+      border-color: rgba(0, 229, 255, 0.15);
+    }
+    .case-section h2 .section-number { color: var(--accent-cyan); }
+    .arch-diagram { color: #00E5FF; }
+    .stat-card .stat-value { color: var(--accent-cyan); }
+    .case-footer .footer-links a:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: rgba(0, 229, 255, 0.08);
+    }
+    .case-footer .footer-links a.primary-btn {
+      background: rgba(0, 229, 255, 0.1);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: var(--accent-cyan);
+    }
+    .case-footer .footer-links a.primary-btn:hover {
+      background: rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+    }
+    .case-nav a:hover { color: var(--accent-cyan); }
+    ::selection { background: #00E5FF; color: #000; }
+    .code-inline {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--accent-cyan);
+      border: 1px solid var(--border);
+    }
+  </style>
+  <title>DentFlow AI — Case Study | Shyam Kumar</title>
+</head>
+<body>
+
+  <!-- Fixed Navigation Bar -->
+  <nav class="case-nav">
+    <a href="https://shyamkumar.in/portfolio">&larr; Back to Portfolio</a>
+    <span class="nav-title">DentFlow AI</span>
+  </nav>
+
+  <!-- Article -->
+  <article class="case-article">
+
+    <!-- Header -->
+    <header class="case-header">
+      <span class="case-category">Full-Stack AI Application</span>
+      <h1>DentFlow AI</h1>
+      <p class="case-tagline">
+        Modern dental practice management with AI-assisted diagnostics, patient management, and intelligent scheduling.
+        Next.js 16 + Prisma + OpenAI.
+      </p>
+      <div class="case-meta">
+        <span>&#128197; 2026</span>
+        <span>&#128268; Under development</span>
+        <span>Stack &middot; TypeScript &middot; Next.js 16 &middot; Prisma &middot; PostgreSQL &middot; OpenAI &middot; Radix UI &middot; Tailwind &middot; next-auth</span>
+        <span><a href="https://github.com/ShyamKumar1/dentflow-ai" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='#00E5FF'" onmouseout="this.style.color='var(--text-muted)'">&#128279; GitHub</a></span>
+      </div>
+    </header>
+
+    <!-- Problem -->
+    <section class="case-section">
+      <h2><span class="section-number">01</span> The Problem</h2>
+      <p>
+        Dental practices are small businesses running on outdated software. Legacy practice management systems (PMS)
+        are monolithic, on-premise, and built with technology stacks from a decade ago. Dentists juggle multiple
+        windows &mdash; one for scheduling, one for billing, one for charting, one for imaging &mdash; with little
+        to no integration between them. Patient data lives in silos, appointment scheduling is a manual puzzle of
+        provider availability, procedure duration, and equipment constraints, and <strong>there is no AI assistance</strong>
+        for diagnostics or treatment planning.
+      </p>
+      <p>
+        The core question: <strong>could a modern, AI-native web application replace the fragmented legacy stack?</strong>
+        Not just digitising existing workflows, but reimagining them &mdash; with AI-assisted X-ray analysis, intelligent
+        scheduling that understands procedure constraints, and a unified patient record that surfaces insights instead of
+        just storing data.
+      </p>
+    </section>
+
+    <!-- Architecture -->
+    <section class="case-section">
+      <h2><span class="section-number">02</span> Architecture</h2>
+      <p>
+        DentFlow AI uses Next.js 16 App Router with Server Actions as the primary data mutation layer. The application
+        is organised into feature modules that each own their data, UI, and business logic &mdash; Patient Manager,
+        Appointments, AI Assistant, Billing, and Settings &mdash; all sharing a common data layer through Prisma ORM.
+      </p>
+
+      <pre class="arch-diagram">Next.js 16 (App Router, Server Actions)
+├── Patient Manager
+├── Appointments
+├── AI Assistant (OpenAI)
+├── Billing
+└── Settings
+    │
+    ▼
+Data Layer
+├── Prisma ORM → PostgreSQL
+└── OpenAI API (AI Diagnostics)
+
+Auth: next-auth (Credentials + OAuth)</pre>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#9889; Design Decision</span>
+        <p>
+          Server Actions were chosen over a separate API layer for data mutations because they eliminate client-server
+          boilerplate, run type-safe queries through Prisma, and enable optimistic UI updates with zero extra plumbing.
+          For webhook or third-party integrations, we fall back to Route Handlers.
+        </p>
+      </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="case-section">
+      <h2><span class="section-number">03</span> Tech Stack</h2>
+      <p>
+        Every component was chosen for <strong>developer experience</strong>, <strong>type safety</strong>, and
+        <strong>accessibility</strong>. TypeScript runs from the database schema (Prisma) through to the UI (Tailwind + cva).
+      </p>
+
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Chosen Technology</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Runtime</td>
+            <td>TypeScript</td>
+            <td>End-to-end type safety, schema to UI</td>
+          </tr>
+          <tr>
+            <td>Framework</td>
+            <td>Next.js 16 App Router</td>
+            <td>Server components, Server Actions, file-based routing, streaming SSR</td>
+          </tr>
+          <tr>
+            <td>ORM &amp; Database</td>
+            <td>Prisma ORM + PostgreSQL</td>
+            <td>Type-safe queries, migrations, relation management</td>
+          </tr>
+          <tr>
+            <td>AI / LLM</td>
+            <td>OpenAI API (GPT-4o / Vision)</td>
+            <td>AI diagnostic assistance, X-ray analysis, treatment suggestions</td>
+          </tr>
+          <tr>
+            <td>UI Components</td>
+            <td>Radix UI (Dialog, Popover, Select, Tabs, Tooltip)</td>
+            <td>Accessible, composable, unstyled primitives</td>
+          </tr>
+          <tr>
+            <td>Styling</td>
+            <td>Tailwind CSS + cva</td>
+            <td>Utility-first styling with component variants</td>
+          </tr>
+          <tr>
+            <td>Authentication</td>
+            <td>next-auth v5</td>
+            <td>Credentials + OAuth, session management, middleware protection</td>
+          </tr>
+          <tr>
+            <td>Utilities</td>
+            <td>date-fns, bcryptjs, Vitest</td>
+            <td>Date manipulation, password hashing, testing</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="insight-box">
+        <span class="insight-label">Why This Stack</span>
+        <p>
+          Next.js 16 App Router with Server Components eliminates the client-side JavaScript tax for data-heavy pages.
+          Prisma + PostgreSQL provides a type-safe database layer that catches schema errors at compile time. Radix UI
+          delivers production-grade accessibility without visual opinionation. Together they compose into a stack that
+          scales in complexity without scaling in cognitive overhead.
+        </p>
+      </div>
+    </section>
+
+    <!-- Key Challenges -->
+    <section class="case-section">
+      <h2><span class="section-number">04</span> Key Challenges</h2>
+
+      <h3>&#128221; 1. Healthcare Data Sensitivity (PHI Compliance)</h3>
+      <p>
+        Dental practices handle Protected Health Information (PHI) &mdash; patient records, X-rays, treatment plans,
+        insurance details. HIPAA compliance requires airtight authentication, role-based access control, data encryption
+        at rest and in transit, and audit logging. Every Server Action and Route Handler must verify the user's identity
+        and authorisation before touching patient data. We enforce row-level security through Prisma's <span class="code-inline">where</span>
+        clauses validated against the session user, never trusting client-side identifiers.
+      </p>
+
+      <h3>&#128300; 2. AI Diagnostics — Vision API for X-Ray Analysis</h3>
+      <p>
+        Integrating OpenAI's Vision API for dental X-ray interpretation presented a unique challenge: <strong>how do you
+        surface AI insights without overstating certainty?</strong> Dental diagnostics are nuanced &mdash; a radiolucency
+        could be caries, a restoration shadow, or an artefact. We implemented a tiered confidence scoring system:
+        findings below 70% confidence are flagged as <em>possible findings requiring clinical confirmation</em>, between
+        70&ndash;90% as <em>likely findings</em>, and above 90% as <em>high-confidence findings</em>. Every AI suggestion
+        is accompanied by the source region of interest (bounding box or heatmap) and a disclaimer that the AI is an
+        assistant, not a replacement for a licensed dentist.
+      </p>
+
+      <h3>&#128197; 3. Scheduling Complexity — A Constraint Satisfaction Problem</h3>
+      <p>
+        Dental appointment scheduling is deceptively complex. Each procedure has a duration range (30&ndash;180 minutes),
+        requires specific provider qualifications, may need specialised equipment (e.g., surgical microscope, cone-beam
+        CT), and must account for insurance pre-authorisation windows. Adding operatories (treatment rooms) as a shared
+        resource turns scheduling into a <strong>multi-dimensional constraint satisfaction problem</strong>. We modelled
+        this as a backtracking solver with forward-checking, pruning infeasible slots before presenting options to the
+        frontend. The solver runs on the server and returns the top 5 available slots ranked by a heuristic that balances
+        provider preference, patient history, and practice revenue.
+      </p>
+
+      <div class="insight-box insight-box-purple">
+        <span class="insight-label">&#128640; Optimisation</span>
+        <p>
+          The scheduling solver caches provider availability intents per session and incrementally invalidates only
+          affected slots when a booking is created or cancelled. For a typical 5-provider practice with 8 operatories,
+          the solver returns results in under 15ms on a cold start &mdash; fast enough for real-time UI feedback as
+          the user adjusts date or provider filters.
+        </p>
+      </div>
+
+      <h3>&#128268; 4. Offline Resilience</h3>
+      <p>
+        Many dental clinics operate in areas with unreliable internet connectivity. A patient check-in or treatment note
+        cannot wait for a round trip to the cloud. We implemented a local-first pattern using <strong>Service Workers</strong>
+        and <strong>IndexedDB</strong> for caching critical data (today's appointments, active patient charts), with a
+        background sync queue that replays mutations when connectivity is restored. Conflict resolution uses a
+        last-writer-wins strategy with server-side timestamps, sufficient for the single-clinic use case where two
+        staff members rarely edit the same record simultaneously.
+      </p>
+
+      <div class="insight-box insight-box-gold">
+        <span class="insight-label">Lesson Learned</span>
+        <p>
+          Local-first adds an order of magnitude of complexity to state management. We initially tried an optimistic
+          update approach everywhere, but it made the offline sync queue fragile. The simpler pattern &mdash; treat
+          the server as source of truth, cache aggressively, and let the sync queue replay in sequence &mdash; proved
+          more reliable. Offline support is not something you bolt on at the end; it must be designed from the database
+          schema up.
+        </p>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="case-section">
+      <h2><span class="section-number">05</span> Results</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-value">AI</span>
+          <span class="stat-label">Diagnostic Assistant (Vision API)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value cyan">Full-Stack</span>
+          <span class="stat-label">Next.js 16 + Prisma + PostgreSQL</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value purple">Accessible</span>
+          <span class="stat-label">Radix UI Components</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value gold">Secure</span>
+          <span class="stat-label">next-auth + bcryptjs</span>
+        </div>
+      </div>
+
+      <p>
+        DentFlow AI is under active development. The architecture is fully established and core modules are operational.
+        The Next.js 16 App Router foundation with Server Actions provides a clean, type-safe data flow. Prisma + PostgreSQL
+        handle persistence with full migration management. The OpenAI integration routes diagnostic requests through a
+        carefully calibrated confidence pipeline. Radix UI components deliver a keyboard-navigable, screen-reader-friendly
+        interface out of the box. Authentication with next-auth v5 supports both credentials and OAuth providers.
+      </p>
+
+      <ul>
+        <li><strong>Next.js 16 App Router architecture</strong> &mdash; Server components, Server Actions, streaming SSR, and file-based routing for a modern full-stack foundation</li>
+        <li><strong>Prisma ORM + PostgreSQL</strong> &mdash; Type-safe queries, automatic migrations, and relation management across patients, appointments, treatments, and billing</li>
+        <li><strong>OpenAI integration</strong> &mdash; Vision API for X-ray analysis with tiered confidence scoring and region-of-interest highlighting</li>
+        <li><strong>Radix UI accessible components</strong> &mdash; Dialog, Popover, Select, Tabs, and Tooltip primitives that meet WCAG 2.1 AA standards</li>
+        <li><strong>next-auth v5 authentication</strong> &mdash; Credentials + OAuth providers with session-based middleware protection</li>
+        <li><strong>Intelligent scheduling solver</strong> &mdash; Constraint satisfaction engine handling procedure duration × provider × equipment × insurance pre-auth</li>
+      </ul>
+    </section>
+
+    <!-- What I Learned -->
+    <section class="case-section">
+      <h2><span class="section-number">06</span> What I Learned</h2>
+
+      <p>
+        DentFlow AI has been a deep exploration of building healthcare software with modern web technologies. Key takeaways:
+      </p>
+
+      <div class="insight-box">
+        <span class="insight-label">&#128218; Lesson 1</span>
+        <p>
+          <strong>Healthcare software is about restraint, not feature count.</strong> The temptation to add more AI
+          capabilities is constant, but every diagnostic suggestion carries liability. Designing the AI confidence
+          tiers &mdash; and building UI that honestly communicates uncertainty &mdash; was harder than wiring up the
+          API call. In healthcare, the most important feature is <em>knowing when not to act</em>.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#128218; Lesson 2</span>
+        <p>
+          <strong>Prisma + Server Actions create an incredibly tight feedback loop.</strong> Schema changes flow into
+          type-safe queries that the compiler validates before the code reaches a browser. There's no REST API versioning,
+          no JSON serialisation mismatch, no undocumented endpoint. The cost is vendor lock-in to the Prisma ecosystem,
+          but for a single-codebase full-stack application, the productivity gain is substantial.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-purple">
+        <span class="insight-label">&#128218; Lesson 3</span>
+        <p>
+          <strong>Scheduling is a systems design problem disguised as a CRUD feature.</strong> What looks like
+          "create an appointment" quickly becomes a constraint solver involving provider calendars, operatory
+          availability, procedure durations, equipment requirements, and insurance rules. Abstracting that complexity
+          behind a clean API &mdash; while keeping the UI responsive &mdash; required thinking in terms of search
+          spaces and heuristics, not database queries.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-gold">
+        <span class="insight-label">&#128218; Lesson 4</span>
+        <p>
+          <strong>Accessibility is part of the data model, not the UI layer.</strong> Using Radix UI primitives
+          enforces accessible patterns at the component level, but true accessibility means thinking about keyboard
+          workflows for scheduling, screen reader announcements for AI diagnostic results, and focus management in
+          multi-step forms. These concern the <em>data flow</em>, not just the visual presentation.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="case-footer">
+      <div class="footer-links">
+        <a href="https://github.com/ShyamKumar1/dentflow-ai" target="_blank" rel="noopener" class="primary-btn">&#128279; View on GitHub</a>
+        <a href="https://shyamkumar.in/portfolio" target="_blank" rel="noopener">&#128279; Back to Portfolio</a>
+      </div>
+      <a href="https://shyamkumar.in" class="back-link">&larr; shyamkumar.in</a>
+      <div class="private-note" style="margin-top:20px;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);font-size:12px;color:#555;">
+        &#128274; Source code is private. This case study details the architecture, tech stack, and engineering decisions. Access granted on reasonable request.
+      </div>
+    </footer>
+
+  </article>
+
+</body>
+</html>

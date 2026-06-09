@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VoxCraft — Professional TTS Studio | Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="case-nav">
+  <a href="../index.html">&larr; Back to Portfolio</a>
+  <span class="nav-title">Case Study</span>
+</nav>
+
+<article class="case-article">
+
+  <!-- Header -->
+  <header class="case-header">
+    <span class="case-category">Audio AI / TTS</span>
+    <h1>VoxCraft</h1>
+    <p class="case-tagline">Enterprise-grade text-to-speech studio generating 44.1 kHz studio-quality voiceovers. 10 voice styles, 31 languages, 100% local.</p>
+    <div class="case-meta">
+      <span>📅 2026</span>
+      <span>⚡ Operational</span>
+      <span>🐍 Python + FastAPI</span>
+      <span>🔊 Supertonic 3</span>
+    </div>
+  </header>
+
+  <!-- Architecture Diagram -->
+  <pre class="arch-diagram">
+Frontend (WaveSurfer.js + Vanilla JS)
+    │ HTTP
+Backend (FastAPI + Python 3.14)
+    ├── Supertonic 3 Engine (99M ONNX)
+    │   ├── Voice Models (M1-M5, F1-F5)
+    │   └── Expression Parser (&lt;laugh&gt;, &lt;whisper&gt;, etc.)
+    └── Generation History (SQLite)
+100% Local — No API Calls
+  </pre>
+
+  <!-- Problem -->
+  <section class="case-section">
+    <h2><span class="section-number">01</span> Problem</h2>
+    <p>Modern voiceover production relies on a patchwork of cloud TTS services — each with per-character billing, network latency, opaque privacy policies, and limited control over voice parameters. Content creators, indie studios, and accessibility tool builders needed a solution that was <strong>fast, private, and fully controllable</strong> without recurring API costs.</p>
+    <p>VoxCraft was built to prove that a <strong>100% local TTS engine</strong> — powered by a compact 99M parameter neural model — could deliver broadcast-ready 44.1 kHz audio across dozens of languages and voice profiles, all from a single laptop.</p>
+  </section>
+
+  <!-- Architecture -->
+  <section class="case-section">
+    <h2><span class="section-number">02</span> Architecture</h2>
+    <p>The system is split into two layers connected over HTTP, keeping everything on-device:</p>
+    <ul>
+      <li><strong>Backend (FastAPI + Python 3.14)</strong> — Loads the Supertonic 3 ONNX model, manages voice profiles, parses expression tags, and serves the generation API. A SQLite store keeps a searchable history of every generation.</li>
+      <li><strong>Frontend (WaveSurfer.js + Vanilla JS)</strong> — A zero-dependency studio UI with waveform display, voice/language selection, speed control, draft/studio quality toggle, and batch mode. All rendering is client-side.</li>
+    </ul>
+    <p>The <strong>Expression Parser</strong> sits between the user's input text and the model's tokenizer, converting human-friendly tags like <code>&lt;laugh&gt;</code> into Supertonic control tokens while preserving natural prosody across the surrounding sentence.</p>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="case-section">
+    <h2><span class="section-number">03</span> Tech Stack</h2>
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Technology</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Runtime</td>
+          <td>Python 3.14</td>
+          <td>Latest CPython with TOML-native config, free-threaded compatible</td>
+        </tr>
+        <tr>
+          <td>API Server</td>
+          <td>FastAPI</td>
+          <td>Async endpoints for generation, history CRUD, voice listing</td>
+        </tr>
+        <tr>
+          <td>Inference Engine</td>
+          <td>Supertonic 3 (99M params ONNX)</td>
+          <td>31 languages, no GPU required, ~300 ms inference</td>
+        </tr>
+        <tr>
+          <td>Frontend</td>
+          <td>WaveSurfer.js + Vanilla JS</td>
+          <td>Waveform rendering, playback, region selection</td>
+        </tr>
+        <tr>
+          <td>Storage</td>
+          <td>SQLite</td>
+          <td>Generation history with full-text search</td>
+        </tr>
+        <tr>
+          <td>Audio Format</td>
+          <td>44.1 kHz 16-bit WAV</td>
+          <td>Studio-standard PCM, cross-platform consistent</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Challenges -->
+  <section class="case-section">
+    <h2><span class="section-number">04</span> Challenges</h2>
+
+    <h3>Real-time generation vs quality</h3>
+    <p>The model's denoising steps are the primary control knob for audio quality. Fewer steps deliver sub-second previews but introduce audible artifacts; more steps produce studio-grade output at the cost of latency. We solved this with a <strong>Draft → Studio quality toggle</strong>: draft mode uses minimal steps for rapid iteration, studio mode runs the full pipeline and caches the result.</p>
+    <div class="insight-box">
+      <div class="insight-label">Key Insight</div>
+      <p>Separating preview from final quality let users iterate 5× faster without sacrificing the final render. The same model handles both — just a parameter change.</p>
+    </div>
+
+    <h3>Expression tag parsing</h3>
+    <p>Tags like <code>&lt;laugh&gt;</code>, <code>&lt;whisper&gt;</code>, and <code>&lt;sigh&gt;</code> must be converted to Supertonic control tokens without breaking the rhythm or prosody of the surrounding sentence. Early attempts produced robotic transitions or swallowed adjacent punctuation.</p>
+    <p>The solution: a two-pass parser that first expands tags to token-level control sequences, then runs a prosody-preservation pass that adjusts duration and pitch contours at tag boundaries.</p>
+    <div class="insight-box insight-box-cyan">
+      <div class="insight-label">Technical Detail</div>
+      <p>Tags are treated as <strong>phoneme-level interrupts</strong> rather than sentence breaks. The parser inserts a short fade window (5 ms) around each tag boundary to prevent audible clicks.</p>
+    </div>
+
+    <h3>WaveSurfer.js sync</h3>
+    <p>Rendering a 44.1 kHz WAV waveform in the browser without dropping frames requires careful buffer management. WaveSurfer.js expects pre-decoded PCM data; sending raw 16-bit samples over HTTP and decoding on the client introduced jank on larger generations.</p>
+
+    <h3>Cross-platform WAV consistency</h3>
+    <p>WAV files generated on macOS vs Linux had subtle header differences (chunk sizes, byte ordering) that broke playback on certain players. We standardised on a <strong>canonical WAV writer</strong> that writes RIFF headers by hand, guaranteeing bit-identical output across platforms.</p>
+    <div class="insight-box insight-box-gold">
+      <div class="insight-label">Lesson</div>
+      <p>Never trust platform stdlib WAV writers for production audio. A 50-line manual RIFF writer eliminates a surprising class of heisenbugs.</p>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="case-section">
+    <h2><span class="section-number">05</span> Results</h2>
+    <p>VoxCraft ships as a fully self-contained desktop studio with zero external dependencies at inference time. The application has been validated across macOS and Linux with consistent output quality.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-value">10</span>
+        <span class="stat-label">Voice Profiles<br>M1–M5, F1–F5</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value cyan">31</span>
+        <span class="stat-label">Languages<br>Global coverage</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value purple">44.1</span>
+        <span class="stat-label">kHz Studio Quality<br>16-bit WAV</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value gold">100%</span>
+        <span class="stat-label">Local<br>No API calls</span>
+      </div>
+    </div>
+
+    <ul>
+      <li><strong>Full studio UI</strong> — Waveform viewer, voice/language selector, speed slider (0.7–2.0×), and quality toggle.</li>
+      <li><strong>10 voice profiles</strong> — 5 male (M1–M5) and 5 female (F1–F5), each with distinct timbre and cadence.</li>
+      <li><strong>31 languages</strong> — 30+ languages supported by the underlying Supertonic 3 model, covering major European, Asian, and Middle Eastern language families.</li>
+      <li><strong>Batch processing</strong> — Queue multiple texts for sequential or parallel generation.</li>
+      <li><strong>SQLite history</strong> — Every generation is stored with full-text search; users can revisit, re-download, or tweak past renders.</li>
+      <li><strong>Zero API dependency</strong> — All inference runs locally; no data ever leaves the machine.</li>
+    </ul>
+  </section>
+
+  <!-- Lessons -->
+  <section class="case-section">
+    <h2><span class="section-number">06</span> Lessons Learned</h2>
+
+    <div class="insight-box insight-box-purple">
+      <div class="insight-label">Lesson #1 — Local-first doesn't mean simple</div>
+      <p>Shipping a local ML application means owning the entire stack — model loading, device management, audio encoding, cross-platform file I/O. The complexity you'd normally outsource to a cloud API becomes your responsibility, but the payoff in privacy and latency is enormous.</p>
+    </div>
+
+    <div class="insight-box insight-box-purple">
+      <div class="insight-label">Lesson #2 — Quality is a UX parameter, not a model knob</div>
+      <p>Users don't want to tweak denoising steps or sample rates. They want "preview" and "final". Mapping technical knobs to human-meaningful settings (Draft/Studio) made the tool approachable for non-technical users without hiding power from engineers.</p>
+    </div>
+
+    <div class="insight-box insight-box-purple">
+      <div class="insight-label">Lesson #3 — Small models are underrated</div>
+      <p>99M parameters is tiny by modern LLM standards, yet Supertonic 3 produces TTS quality that rivals models 10× its size — on CPU. The efficiency of the architecture (attention-free feed-forward networks) meant we could run on a MacBook Air without a GPU. Not every problem needs a trillion-parameter model.</p>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="case-footer">
+    <div class="footer-links">
+      <a href="https://github.com/ShyamKumar1/voxcraft" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+      <a href="../index.html" class="primary-btn">Back to Portfolio</a>
+    </div>
+    <div class="private-note" style="margin-top:20px;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);font-size:12px;color:#555;">🔒 Source code is private. This case study details the architecture, tech stack, and engineering decisions. Access granted on reasonable request.</div>
+  </footer>
+
+</article>
+
+</body>
+</html>

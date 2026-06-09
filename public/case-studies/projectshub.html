@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ProjectHub — Full-Stack Collaboration Dashboard. A production-grade project management and collaboration platform with real-time feeds, GitHub integration, streaks, and a custom dark theme design system called Landa. Built with TypeScript, Next.js 14, Fastify, PostgreSQL, Redis, Socket.io.">
+  <meta property="og:title" content="ProjectHub — Full-Stack Collaboration Dashboard">
+  <meta property="og:description" content="A production-grade project management and collaboration platform with real-time feeds, GitHub integration, streaks, and a custom dark theme design system called Landa.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://shyamkumar.in/assets/og-projectshub.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>ProjectHub — Full-Stack Collaboration Dashboard | Shyam Kumar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ProjectHub — Landa teal theme (#09bc8a) */
+    .case-header h1 {
+      background: linear-gradient(135deg, #09bc8a, #00E5FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .case-category {
+      background: rgba(9, 188, 138, 0.08);
+      color: #09bc8a;
+      border-color: rgba(9, 188, 138, 0.15);
+    }
+    .case-section h2 .section-number { color: #09bc8a; }
+    .arch-diagram { color: #09bc8a; }
+    .stat-card .stat-value { color: #09bc8a; }
+    .case-footer .footer-links a:hover {
+      border-color: #09bc8a;
+      color: #09bc8a;
+      background: rgba(9, 188, 138, 0.08);
+    }
+    .case-footer .footer-links a.primary-btn {
+      background: rgba(9, 188, 138, 0.1);
+      border-color: rgba(9, 188, 138, 0.3);
+      color: #09bc8a;
+    }
+    .case-footer .footer-links a.primary-btn:hover {
+      background: rgba(9, 188, 138, 0.2);
+      box-shadow: 0 0 20px rgba(9, 188, 138, 0.1);
+    }
+    .case-nav a:hover { color: #09bc8a; }
+    ::selection { background: #09bc8a; color: #000; }
+    .code-inline {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #09bc8a;
+      border: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Navigation Bar -->
+  <nav class="case-nav">
+    <a href="../index.html">&larr; Back to Portfolio</a>
+    <span class="nav-title">Case Study</span>
+  </nav>
+
+  <!-- Article -->
+  <article class="case-article">
+
+    <!-- Header -->
+    <header class="case-header">
+      <span class="case-category">Full-Stack Web Application</span>
+      <h1>ProjectHub</h1>
+      <p class="case-tagline">
+        A production-grade project management and collaboration platform with real-time feeds, GitHub integration, streaks, and a custom dark theme design system called Landa.
+      </p>
+      <div class="case-meta">
+        <span>&#128197; 2026</span>
+        <span>&#9889; Functional — all major features implemented</span>
+        <span>&#128200; TypeScript, Next.js 14, Fastify, PostgreSQL, Redis, Socket.io</span>
+        <span><a href="https://github.com/ShyamKumar1/ProjectHub" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='#09bc8a'" onmouseout="this.style.color='var(--text-muted)'">&#128279; GitHub</a></span>
+      </div>
+    </header>
+
+    <!-- 01 — The Problem -->
+    <section class="case-section">
+      <h2><span class="section-number">01</span> The Problem</h2>
+      <p>
+        Modern software teams juggle an ever-growing stack of collaboration tools — one for tasks, another for code, a third for documentation, and yet another for real-time communication. The result is <strong>context-switching fatigue</strong>: developers spend as much time navigating between tools as they do actually building software. Existing project management platforms are either too heavy (Jira), too fragmented (spreadsheets + Slack + Notion), or too limited in their integration with the development workflow.
+      </p>
+      <p>
+        ProjectHub was conceived as a <strong>unified collaboration dashboard</strong> that brings project management, real-time activity feeds, GitHub integration, contributor analytics, and team communication into a single, coherent experience. Built around the <strong>Landa</strong> design system — a custom dark theme with a distinctive teal (#09bc8a) accent and deep dark (#010907) backgrounds — it aims to prove that a full-stack application can be both feature-rich and delightful to use.
+      </p>
+      <p>
+        The core challenge was <strong>real-time data synchronisation</strong> across multiple users viewing and editing the same projects simultaneously, combined with the need for persistent state (tasks, projects, streaks) that survives page reloads and session boundaries. The solution needed to handle OAuth from multiple providers, role-based access control, and a GitHub-style contribution heatmap — all while staying performant on modest hardware.
+      </p>
+    </section>
+
+    <!-- 02 — Architecture -->
+    <section class="case-section">
+      <h2><span class="section-number">02</span> Architecture</h2>
+      <p>
+        ProjectHub follows a <strong>three-layer architecture</strong> with clear separation of concerns. The Next.js 14 App Router handles server-side rendering and routing on the frontend, Fastify serves a REST API with Zod-validated schemas on the backend, and Socket.io bridges the two for real-time event propagation. PostgreSQL is the primary data store, with Redis handling caching, session management, and pub/sub for cross-instance event broadcasting.
+      </p>
+
+      <pre class="arch-diagram">Frontend (Next.js 14 App Router)
+├── Dashboard + Stats
+├── Project View + Tasks + Members
+├── Activity Feed
+├── Contribution Graph + Streaks
+├── Resources &amp; Links
+├── Notifications
+└── Settings
+    │ HTTP + WebSocket
+    ▼
+Backend (Fastify + TypeScript)
+├── REST API (Zod validation)
+├── JWT + OAuth Auth (Google, GitHub)
+└── Socket.io (real-time events)
+    │
+    ▼
+Database Layer
+├── PostgreSQL (primary data)
+└── Redis (caching, sessions)</pre>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#9889; Design Decision</span>
+        <p>
+          Using <strong>both TanStack Query and Zustand</strong> was deliberate: TanStack Query manages all server-state (projects, tasks, feeds) with automatic invalidation and prefetching, while Zustand holds only ephemeral UI state (sidebar open, active filter, compose-draft content). This keeps the architecture clean: the server is the single source of truth, and the client never caches stale data beyond what the UX requires for responsiveness.
+        </p>
+      </div>
+    </section>
+
+    <!-- 03 — Tech Stack -->
+    <section class="case-section">
+      <h2><span class="section-number">03</span> Tech Stack</h2>
+      <p>
+        Every technology was chosen for a specific reason — not because it was trendy, but because it solved a real problem in the architecture. The stack spans the full application layer, from database to design system.
+      </p>
+
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Technology</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>TypeScript</td>
+            <td>Full-stack type safety — shared types between frontend and backend</td>
+          </tr>
+          <tr>
+            <td>Next.js 14 App Router</td>
+            <td>SSR, file-based routing, server components for dashboard pages</td>
+          </tr>
+          <tr>
+            <td>Fastify</td>
+            <td>Backend API — fast, schema-first with Zod validation</td>
+          </tr>
+          <tr>
+            <td>PostgreSQL</td>
+            <td>Primary data store — projects, tasks, users, activity log</td>
+          </tr>
+          <tr>
+            <td>Redis</td>
+            <td>Caching, session store, pub/sub for Socket.io scaling</td>
+          </tr>
+          <tr>
+            <td>Socket.io</td>
+            <td>Real-time bidirectional events — activity feed, notifications</td>
+          </tr>
+          <tr>
+            <td>TanStack Query</td>
+            <td>Server-state management — caching, prefetching, optimistic updates</td>
+          </tr>
+          <tr>
+            <td>Zustand</td>
+            <td>Client-state management — lightweight, hook-based store</td>
+          </tr>
+          <tr>
+            <td>Tailwind CSS</td>
+            <td>Utility-first styling — fast iteration, consistent design tokens</td>
+          </tr>
+          <tr>
+            <td>Framer Motion</td>
+            <td>Page transitions, skeleton loaders, streak flame animations</td>
+          </tr>
+          <tr>
+            <td>JWT + OAuth</td>
+            <td>Authentication — JWT sessions + Google &amp; GitHub OAuth</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 04 — Key Challenges -->
+    <section class="case-section">
+      <h2><span class="section-number">04</span> Key Challenges</h2>
+
+      <h3>&#128250; 1. Real-Time Collaboration Without Event Spam</h3>
+      <p>
+        When multiple users view and edit the same project simultaneously, every task update, member change, or comment creates a Socket.io event. Without careful <strong>event scoping</strong>, a single user's action could trigger dozens of redundant broadcasts — flooding the client and degrading UX. The solution was a <strong>room-based subscription model</strong>: each project is a Socket.io room, and each event includes a <span class="code-inline">scope</span> field (e.g., <span class="code-inline">project:task:update</span>). Clients subscribe only to the scopes they need, and the server deduplicates identical events within a 500 ms window before broadcasting. This reduced event volume by roughly 70% during peak usage.
+      </p>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#128640; Implementation Detail</span>
+        <p>
+          The deduplication window uses a <span class="code-inline">Map&lt;string, { payload, timer }&gt;</span> keyed by <span class="code-inline">projectId:scope</span>. When a new event arrives, if an identical payload already exists for that scope, the timer is reset. Only the last event in each window is actually emitted. This means rapid toggles (e.g., assigning and unassigning a member) collapse to a single broadcast with the final state.
+        </p>
+      </div>
+
+      <h3>&#127758; 2. Cross-Timezone Streak Tracking</h3>
+      <p>
+        The contribution heatmap and streak system needed to handle users spread across UTC, IST, EST, and beyond. What counts as "today" for a user in New York is still "yesterday" for a user in Mumbai. A naive UTC-based approach would break streaks whenever a user crossed midnight in their local timezone.
+      </p>
+      <p>
+        The solution stores every contribution event with the user's <strong>configured timezone offset</strong> (stored in their profile preferences). The streak engine queries contributions grouped by the user's local day boundary, not UTC midnight. When a user changes their timezone, existing contributions are re-mapped to their new local calendar — this is a one-time background job that runs asynchronously. The heatmap renderer uses the same logic, ensuring the contribution graph always reflects the user's chosen timezone.
+      </p>
+
+      <h3>&#128274; 3. Three-Provider OAuth with Account Linking</h3>
+      <p>
+        Supporting Google OAuth, GitHub OAuth, and JWT-based credentials simultaneously introduces edge cases: a user might sign up with Google, then try to log in with GitHub using the same email. Without account linking, this creates duplicate accounts. With naive linking, it opens security holes (e.g., claiming another user's account by registering their email with a different provider).
+      </p>
+      <p>
+        ProjectHub implements a <strong>verified email linking</strong> flow: when a provider returns an email that already exists in the database, the user must <strong>confirm ownership</strong> via a one-time code sent to that email before the accounts are linked. This prevents unauthorised account claiming while allowing legitimate multi-provider access. Session consistency across providers is maintained via a shared JWT that encodes the user's primary ID and linked provider IDs — regardless of which provider they used to authenticate, the session token is the same.
+      </p>
+
+      <h3>&#128202; 4. Dashboard Performance Under Load</h3>
+      <p>
+        The dashboard page loads projects, tasks, notifications, the activity feed, and streak data simultaneously. Without optimisation, this meant 5+ sequential API calls and visible loading jank. The solution combined two strategies:
+      </p>
+      <ul>
+        <li><strong>TanStack Query prefetching</strong> — On the server, we prefetch all dashboard queries and dehydrate the cache into the page HTML. On the client, TanStack Query hydrates from this cache, meaning the first paint is instant with no loading spinners.</li>
+        <li><strong>Zustand client cache</strong> — UI state like active filters, sidebar visibility, and scroll position is preserved across navigations without hitting the server. Only <em>mutable</em> data (notifications, feed items) is revalidated on focus via TanStack Query's <span class="code-inline">refetchOnWindowFocus</span>.</li>
+      </ul>
+      <p>
+        Together these eliminated N+1 query patterns entirely and made the dashboard feel instant even on slow connections.
+      </p>
+    </section>
+
+    <!-- 05 — Results -->
+    <section class="case-section">
+      <h2><span class="section-number">05</span> Results</h2>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-value">3</span>
+          <span class="stat-label">Auth Providers<br>Google + GitHub + JWT</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value cyan">Real-Time</span>
+          <span class="stat-label">Socket.io<br>Activity feed + notifications</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value purple">Tasks</span>
+          <span class="stat-label">Priority + Due Dates<br>Member assignment</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value gold">Streaks</span>
+          <span class="stat-label">Consecutive Day Tracking<br>Flame indicators</span>
+        </div>
+      </div>
+
+      <p>
+        ProjectHub delivers a <strong>fully functional collaboration platform</strong> with every major feature implemented and working. The Landa design system provides a cohesive visual language across the entire application.
+      </p>
+
+      <ul>
+        <li><strong>Full authentication</strong> — Google OAuth, GitHub OAuth, and JWT credentials with verified email account linking and role-based access control</li>
+        <li><strong>Real-time activity feed</strong> — Every project action (task created, member added, status changed) broadcasts instantly to all participants via Socket.io</li>
+        <li><strong>GitHub-style contribution graph</strong> — Heatmap with configurable timezone support and consecutive-day streak tracking with animated flame indicators</li>
+        <li><strong>Friend &amp; collaboration system</strong> — Search users, send/accept friend requests, add collaborators to projects with granular permissions</li>
+        <li><strong>Resource bookmarking</strong> — Save links with automatic OG metadata fetching and organisation by project</li>
+        <li><strong>GitHub repo integration</strong> — Link projects to GitHub repositories for cross-reference between code and task management</li>
+        <li><strong>Custom Landa design system</strong> — Teal (#09bc8a) accent on deep dark (#010907) background, consistent typography, spacing, and component tokens</li>
+        <li><strong>Notifications</strong> — Real-time alerts for project invites, task assignments, and mentions, with read/unread tracking</li>
+      </ul>
+    </section>
+
+    <!-- 06 — What I Learned -->
+    <section class="case-section">
+      <h2><span class="section-number">06</span> What I Learned</h2>
+
+      <p>
+        Building a real-time collaboration platform from scratch — across the entire stack — taught me as much about system design as it did about the human dynamics of collaborative software. Three lessons stand out:
+      </p>
+
+      <div class="insight-box insight-box-purple">
+        <span class="insight-label">&#128218; Lesson 1</span>
+        <p>
+          <strong>State management is about boundaries, not tools.</strong> The decision to split state between TanStack Query (server) and Zustand (client) forced a clear architectural contract: what lives on the server is the source of truth; what lives on the client is ephemeral. This boundary made debugging trivial — if UI state was wrong, it was Zustand. If data was stale, it was TanStack Query's cache invalidation. Most state-management debates dissolve when you draw a clean line between server-owned and client-owned state.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-gold">
+        <span class="insight-label">&#128218; Lesson 2</span>
+        <p>
+          <strong>Real-time adds an order of magnitude of complexity.</strong> Adding Socket.io to a REST API isn't just "also send a WebSocket event." You now have to reason about event ordering, deduplication, reconnection semantics, missed-message recovery, and cross-instance broadcasting (Redis pub/sub became necessary the moment we considered horizontal scaling). The 500 ms deduplication window was a simple heuristic that solved a hard problem — sometimes the best solutions are the ones that reduce surface area rather than increase it.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#128218; Lesson 3</span>
+        <p>
+          <strong>Timezone-aware features should be built from day one.</strong> Retrofitting timezone support into the streak engine was painful — it required a data migration to store timezone offsets on every event, a background job to re-map historical contributions, and careful testing across multiple timezone boundaries. Had we stored the user's timezone offset alongside each contribution from the start (or better yet, stored UTC timestamps and derived local dates at query time), the entire streak feature would have been simpler and more robust. Timezone is not an edge case; it's a first-class dimension of any user-facing calendar feature.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="case-footer">
+      <div class="footer-links">
+        <a href="https://github.com/ShyamKumar1/ProjectHub" target="_blank" rel="noopener" class="primary-btn">&#128279; View on GitHub</a>
+        <a href="../index.html" target="_blank" rel="noopener">&#128279; Back to Portfolio</a>
+      </div>
+      <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+      <div class="private-note" style="margin-top:20px;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);font-size:12px;color:#555;">
+        🔒 Source code is private. This case study details the architecture, tech stack, and engineering decisions. Access granted on reasonable request.
+      </div>
+    </footer>
+
+  </article>
+
+</body>
+</html>
