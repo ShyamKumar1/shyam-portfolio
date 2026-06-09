@@ -200,6 +200,32 @@
       </p>
     </section>
 
+    <!-- ═══ Code Highlight ═══ -->
+    <section class="case-section">
+      <h2><span class="section-number">⚡</span> Code Highlight</h2>
+      <p>The agent loop uses Kotlin Flow to stream events through a clean intent-routing pipeline — classify, route, emit.</p>
+      <pre class="code-sample" style="background:#0d0d14;border:1px solid #1a1a24;border-radius:10px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:#abb2bf;"><span style="color:#c678dd;">fun</span> <span style="color:#61afef;">processUserMessage</span>(
+    conversationId: <span style="color:#e5c07b;">String</span>,
+    userText: <span style="color:#e5c07b;">String</span>,
+): <span style="color:#e5c07b;">Flow</span>&lt;AgentEvent&gt; <span style="color:#c678dd;">=</span> flow {
+    emit(AgentEvent.AssistantStarted)
+
+    <span style="color:#888;">// Persist user input immediately</span>
+    conversationRepository.appendMessage(
+        conversationId, role = <span style="color:#98c379;">"user"</span>, content = userText,
+    )
+
+    <span style="color:#888;">// Classify intent → route to handler</span>
+    <span style="color:#c678dd;">val</span> intent = intentClassifier.classify(userText)
+    <span style="color:#c678dd;">when</span> (intent) {
+        <span style="color:#c678dd;">is</span> AgentIntent.Empty  <span style="color:#c678dd;">-></span> emit(AgentEvent.Done(DoneReason.EmptyInput))
+        <span style="color:#c678dd;">is</span> AgentIntent.Chat    <span style="color:#c678dd;">-></span> streamLlmReply(conversationId, userText).collect { emit(it) }
+        <span style="color:#c678dd;">is</span> AgentIntent.ToolCall <span style="color:#c678dd;">-></span> handleToolCall(conversationId, intent).collect { emit(it) }
+    }
+    emit(AgentEvent.Done(reason = DoneReason.Normal))
+}.flowOn(Dispatchers.Default)</pre>
+    </section>
+
     <!-- Results -->
     <section class="case-section">
       <h2><span class="section-number">05</span> Results</h2>

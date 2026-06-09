@@ -248,6 +248,48 @@ CI: GitHub Actions (automated runs)</pre>
 
     <!-- Stat Cards -->
     <section class="case-section">
+    <!-- ═══ Code Highlight ═══ -->
+    <section class="case-section">
+      <h2><span class="section-number">⚡</span> Code Highlight</h2>
+      <p>The evaluation engine runs candidate code through four scoring dimensions with configurable weights, producing a structured report from each execution.</p>
+      <pre class="code-sample" style="background:#0d0d14;border:1px solid #1a1a24;border-radius:10px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:#abb2bf;"><span style="color:#c678dd;">def</span> <span style="color:#61afef;">evaluate_solution</span>(
+    problem_name: <span style="color:#e5c07b;">str</span>,
+    code: <span style="color:#e5c07b;">str</span>,
+    func_name: <span style="color:#e5c07b;">str</span>,
+    test_cases: <span style="color:#e5c07b;">list</span>[<span style="color:#e5c07b;">dict</span>],
+    edge_cases: <span style="color:#e5c07b;">list</span>[<span style="color:#e5c07b;">dict</span>] | <span style="color:#c678dd;">None</span> = <span style="color:#c678dd;">None</span>,
+    time_limit: <span style="color:#e5c07b;">float</span> = <span style="color:#98c379;">2.0</span>,
+) -> EvaluationResult:
+    result = EvaluationResult(problem_name)
+
+    <span style="color:#888;"># Dimension 1: Code Quality (static analysis)</span>
+    result.code_quality = analyze_code_quality(code)
+
+    <span style="color:#888;"># Execute and test</span>
+    <span style="color:#c678dd;">try</span>:
+        exec_globals = {}
+        <span style="color:#61afef;">exec</span>(compile(code, <span style="color:#98c379;">'&lt;string&gt;'</span>, <span style="color:#98c379;">'exec'</span>), exec_globals)
+        fn = exec_globals[func_name]
+
+        <span style="color:#888;"># Dimension 2: Correctness — standard test cases</span>
+        result.correctness = run_tests(fn, test_cases, time_limit)
+        <span style="color:#888;"># Dimension 3: Edge cases — boundary conditions</span>
+        result.edge_cases = run_tests(fn, edge_cases or [], time_limit)
+        <span style="color:#888;"># Dimension 4: Performance — timing analysis</span>
+        result.performance = measure_performance(fn, test_cases)
+    <span style="color:#c678dd;">except</span> Exception <span style="color:#c678dd;">as</span> e:
+        result.error = <span style="color:#61afef;">str</span>(e)
+
+    <span style="color:#888;"># Weighted total: 40% + 25% + 20% + 15%</span>
+    result.score = (
+        result.correctness * <span style="color:#98c379;">0.40</span> +
+        result.edge_cases  * <span style="color:#98c379;">0.25</span> +
+        result.performance * <span style="color:#98c379;">0.20</span> +
+        result.code_quality * <span style="color:#98c379;">0.15</span>
+    )
+    <span style="color:#c678dd;">return</span> result</pre>
+    </section>
+
       <h2><span class="section-number">05</span> Results</h2>
 
       <div class="stat-grid">

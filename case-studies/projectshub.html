@@ -240,6 +240,33 @@ Database Layer
       </p>
     </section>
 
+    <!-- ═══ Code Highlight ═══ -->
+    <section class="case-section">
+      <h2><span class="section-number">⚡</span> Code Highlight</h2>
+      <p>The Socket.io event bus handles real-time collaboration — scoping notifications to the right users while avoiding spam during rapid changes.</p>
+      <pre class="code-sample" style="background:#0d0d14;border:1px solid #1a1a24;border-radius:10px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:#abb2bf;">io.<span style="color:#61afef;">on</span>(<span style="color:#98c379;">"connection"</span>, (socket) => {
+  <span style="color:#888;">// Join a project room — scoped notifications per project</span>
+  socket.<span style="color:#61afef;">on</span>(<span style="color:#98c379;">"join_project"</span>, (projectId) => {
+    socket.<span style="color:#61afef;">join</span>(<span style="color:#98c379;">`project:${projectId}`</span>);
+  });
+
+  <span style="color:#888;">// Task update → broadcast to room (not all users)</span>
+  socket.<span style="color:#61afef;">on</span>(<span style="color:#98c379;">"task_updated"</span>, (task) => {
+    io.<span style="color:#61afef;">to</span>(<span style="color:#98c379;">`project:${task.projectId}`</span>).<span style="color:#61afef;">emit</span>(<span style="color:#98c379;">"task_changed"</span>, {
+      taskId: task.id,
+      status: task.status,
+      assignee: task.assigneeId,
+      updatedBy: socket.data.userId,
+    });
+  });
+
+  <span style="color:#888;">// Activity feed entry (debounced server-side)</span>
+  socket.<span style="color:#61afef;">on</span>(<span style="color:#98c379;">"log_activity"</span>, (entry) => {
+    <span style="color:#61afef;">debouncedActivityLog</span>(entry, socket.data.userId);
+  });
+});</pre>
+    </section>
+
     <!-- 05 — Results -->
     <section class="case-section">
       <h2><span class="section-number">05</span> Results</h2>

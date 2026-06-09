@@ -138,6 +138,40 @@ Backend (FastAPI + Python 3.14)
     </div>
   </section>
 
+  <!-- ═══ Code Highlight ═══ -->
+  <section class="case-section">
+    <h2><span class="section-number">⚡</span> Code Highlight</h2>
+    <p>The TTS engine wraps Supertonic 3 with clamped parameters, voice caching, and expression tag support — keeping the generation API simple while exposing full control.</p>
+    <pre class="code-sample" style="background:#0d0d14;border:1px solid #1a1a24;border-radius:10px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:#abb2bf;"><span style="color:#c678dd;">def</span> <span style="color:#61afef;">synthesize</span>(
+    self, text: <span style="color:#e5c07b;">str</span>, voice: <span style="color:#e5c07b;">str</span> = <span style="color:#98c379;">"M1"</span>,
+    lang: <span style="color:#e5c07b;">str</span> = <span style="color:#98c379;">"en"</span>, speed: <span style="color:#e5c07b;">float</span> = <span style="color:#98c379;">1.05</span>,
+    quality: <span style="color:#e5c07b;">int</span> = <span style="color:#98c379;">8</span>,
+) -> <span style="color:#e5c07b;">tuple</span>[np.ndarray, <span style="color:#e5c07b;">float</span>]:
+    <span style="color:#888;">"""Synthesize text → 44.1kHz WAV audio.</span>
+
+<span style="color:#888;">    Args:</span>
+<span style="color:#888;">        text:    Input with optional &lt;laugh&gt;, &lt;whisper&gt; tags</span>
+<span style="color:#888;">        voice:   M1-M5 (male) or F1-F5 (female)</span>
+<span style="color:#888;">        lang:    31 supported languages</span>
+<span style="color:#888;">        speed:   0.7–2.0x without pitch distortion</span>
+<span style="color:#888;">        quality: 5 (draft) – 12 (studio)</span>
+<span style="color:#888;">    """</span>
+    <span style="color:#c678dd;">if</span> <span style="color:#c678dd;">not</span> text.<span style="color:#61afef;">strip</span>():
+        <span style="color:#c678dd;">raise</span> <span style="color:#e5c07b;">ValueError</span>(<span style="color:#98c379;">"Text cannot be empty"</span>)
+
+    <span style="color:#888;"># Clamp and resolve</span>
+    voice_style = self.<span style="color:#61afef;">_get_voice</span>(voice)
+    quality = <span style="color:#61afef;">max</span>(<span style="color:#98c379;">5</span>, <span style="color:#61afef;">min</span>(<span style="color:#98c379;">12</span>, quality))
+    speed = <span style="color:#61afef;">max</span>(<span style="color:#98c379;">0.7</span>, <span style="color:#61afef;">min</span>(<span style="color:#98c379;">2.0</span>, speed))
+
+    wav, duration = self._tts.<span style="color:#61afef;">synthesize</span>(
+        text=text, lang=lang,
+        voice_style=voice_style,
+        total_steps=quality, speed=speed,
+    )
+    <span style="color:#c678dd;">return</span> wav, <span style="color:#e5c07b;">float</span>(duration[<span style="color:#98c379;">0</span>])</pre>
+  </section>
+
   <!-- Results -->
   <section class="case-section">
     <h2><span class="section-number">05</span> Results</h2>

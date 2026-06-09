@@ -216,6 +216,44 @@ AlexanderAgent (wraps pydantic-ai.Agent)
     </div>
   </section>
 
+  <!-- ═══ Code Highlight ═══ -->
+  <section class="case-section">
+    <h2><span class="section-number">⚡</span> Code Highlight</h2>
+    <p>The confidence calibrator combines four signals into a single calibrated score — catching overconfidence before it reaches the user.</p>
+    <pre class="code-sample" style="background:#0d0d14;border:1px solid #1a1a24;border-radius:10px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:#abb2bf;"><span style="color:#c678dd;">class</span> <span style="color:#e5c07b;">ConfidenceCalibrator</span>:
+    <span style="color:#888;">"""Multi-signal confidence estimator.
+
+    Combines four signals into a calibrated score:
+    - model_logprob: LLM token probability
+    - self_consistency: agreement across reasoning paths
+    - verifiability: objective checkability
+    - coherence: consistency with established knowledge
+    """</span>
+
+    <span style="color:#c678dd;">def</span> <span style="color:#61afef;">__init__</span>(self, threshold: <span style="color:#e5c07b;">float</span> = <span style="color:#98c379;">0.7</span>) -> <span style="color:#c678dd;">None</span>:
+        self.threshold = threshold
+
+    <span style="color:#c678dd;">async def</span> <span style="color:#61afef;">evaluate</span>(
+        self, thought: <span style="color:#e5c07b;">Thought</span>,
+        signals: <span style="color:#e5c07b;">dict</span>[<span style="color:#e5c07b;">str</span>, <span style="color:#e5c07b;">float</span>] <span style="color:#c678dd;">|</span> <span style="color:#c678dd;">None</span> = <span style="color:#c678dd;">None</span>,
+    ) -> <span style="color:#e5c07b;">ConfidenceReport</span>:
+        <span style="color:#888;">"""Evaluate confidence for a single thought."""</span>
+        signals = signals <span style="color:#c678dd;">or</span> {
+            <span style="color:#98c379;">"model_logprob"</span>:     self.<span style="color:#61afef;">_estimate_logprob</span>(thought),
+            <span style="color:#98c379;">"self_consistency"</span>:  self.<span style="color:#61afef;">_estimate_consistency</span>(thought),
+            <span style="color:#98c379;">"verifiability"</span>:     self.<span style="color:#61afef;">_estimate_verifiability</span>(thought),
+            <span style="color:#98c379;">"coherence"</span>:         self.<span style="color:#61afef;">_estimate_coherence</span>(thought),
+        }
+        raw_score = sum(signals.values()) / <span style="color:#98c379;">4</span>
+        calibrated = self.<span style="color:#61afef;">_calibrate</span>(raw_score)
+        needs_review = calibrated < self.threshold
+        <span style="color:#c678dd;">return</span> ConfidenceReport(
+            raw_score=raw_score, calibrated_score=calibrated,
+            signals=signals, threshold=self.threshold,
+            needs_review=needs_review,
+        )</pre>
+  </section>
+
   <!-- ===== Results ===== -->
   <section class="case-section">
     <h2><span class="section-number">05</span> Results</h2>

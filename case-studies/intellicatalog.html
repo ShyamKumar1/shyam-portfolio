@@ -163,6 +163,32 @@
       </div>
     </section>
 
+    <!-- Code Highlight -->
+    <section class="case-section">
+      <h2><span class="section-number">⚡</span> Code Highlight</h2>
+      <p>The LiveKit agent pipeline wires STT → LLM with function calling → TTS into a real-time voice loop.</p>
+      <pre class="code-sample" style="background:#0d0d14;border:1px solid #1a1a24;border-radius:10px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:#abb2bf;"><span style="color:#c678dd;">async def</span> <span style="color:#61afef;">entrypoint</span>(ctx: JobContext):
+    <span style="color:#888;"># Join the LiveKit room</span>
+    room = <span style="color:#c678dd;">await</span> ctx.<span style="color:#61afef;">connect</span>()
+
+    <span style="color:#888;"># Set up the voice pipeline agent</span>
+    agent = VoicePipelineAgent(
+        vad = ctx.<span style="color:#61afef;">create_vad</span>(),
+        stt = DeepgramSTT(language=<span style="color:#98c379;">"en-US"</span>),
+        llm = OpenAILLM(model=<span style="color:#98c379;">"gpt-4o"</span>),
+        tts = CartesiaTTS(voice=<span style="color:#98c379;">"79a125e8"</span>),
+    )
+
+    <span style="color:#888;"># Register catalog functions</span>
+    @agent.<span style="color:#61afef;">on</span>(<span style="color:#98c379;">"search_parts"</span>)
+    <span style="color:#c678dd;">async def</span> <span style="color:#61afef;">search_parts</span>(query: <span style="color:#e5c07b;">str</span>) -> <span style="color:#e5c07b;">list</span>[Part]:
+        <span style="color:#888;">"""Search the EPC catalog by description or part number."""</span>
+        <span style="color:#c678dd;">return await</span> catalog.<span style="color:#61afef;">search</span>(query)
+
+    <span style="color:#c678dd;">await</span> agent.<span style="color:#61afef;">start</span>(room)
+    <span style="color:#c678dd;">await</span> agent.<span style="color:#61afef;">say</span>(<span style="color:#98c379;">"Welcome to IntelliCatalog. Say a part name to begin."</span>)</pre>
+    </section>
+
     <!-- Results -->
     <section class="case-section">
       <h2><span class="section-number">05</span>Results</h2>

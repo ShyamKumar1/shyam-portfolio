@@ -309,6 +309,35 @@
       </div>
     </section>
 
+    <!-- ═══ Code Highlight ═══ -->
+    <section class="case-section" id="code-highlight">
+      <h2><span class="section-number">⚡</span> Code Highlight</h2>
+      <p>The GST engine determines tax type from shipping addresses, then computes CGST+SGST or IGST with deterministic rounding.</p>
+      <pre class="code-sample" style="background:#0d0d14;border:1px solid #1a1a24;border-radius:10px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:#abb2bf;"><span style="color:#c678dd;">export function</span> <span style="color:#61afef;">calculateGST</span>(input: GSTInput): GSTCalculation {
+  <span style="color:#c678dd;">const</span> { firmStateCode, partyStateCode,
+          taxableAmount, hsnCode, overrideRate } = input;
+  <span style="color:#888;">// Intra-state → CGST+SGST, Inter-state → IGST</span>
+  <span style="color:#c678dd;">const</span> isIntraState = firmStateCode === partyStateCode;
+  <span style="color:#c678dd;">const</span> gstType = isIntraState ? <span style="color:#98c379;">'CGST_SGST'</span> : <span style="color:#98c379;">'IGST'</span>;
+  <span style="color:#c678dd;">const</span> fullRate = overrideRate ?? getGstRate(hsnCode);
+  <span style="color:#c678dd;">const</span> round2 = (n: number) => Math.<span style="color:#61afef;">round</span>(n * <span style="color:#98c379;">100</span>) / <span style="color:#98c379;">100</span>;
+
+  <span style="color:#c678dd;">if</span> (isIntraState) {
+    <span style="color:#c678dd;">const</span> halfRate = fullRate / <span style="color:#98c379;">2</span>;
+    <span style="color:#c678dd;">const</span> cgstAmt = <span style="color:#61afef;">round2</span>(taxableAmount * halfRate / <span style="color:#98c379;">100</span>);
+    <span style="color:#c678dd;">const</span> sgstAmt = <span style="color:#61afef;">round2</span>(taxableAmount * halfRate / <span style="color:#98c379;">100</span>);
+    <span style="color:#c678dd;">return</span> {
+      gst_type: <span style="color:#98c379;">'CGST_SGST'</span>,
+      cgst_rate: halfRate, sgst_rate: halfRate, igst_rate: <span style="color:#98c379;">0</span>,
+      cgst_amount: cgstAmt, sgst_amount: sgstAmt, igst_amount: <span style="color:#98c379;">0</span>,
+      net_amount: taxableAmount + cgstAmt + sgstAmt,
+    };
+  }
+  <span style="color:#888;">// IGST for inter-state — single rate applied</span>
+  ...
+}</pre>
+    </section>
+
     <!-- ========== RESULTS ========== -->
     <section class="case-section" id="results">
       <h2><span class="section-number">05</span> Results &amp; Impact</h2>
