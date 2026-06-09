@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="News Scraper — AI-Powered Semantic News Scraping System. A production-grade web scraper with sentence-transformers semantic filtering, Google Sheets export, and live interactive dashboard. Built for paginated news archives at scale.">
+  <meta property="og:title" content="News Scraper — AI-Powered Semantic News Scraping">
+  <meta property="og:description" content="Paginated archive scraper with AI semantic filtering, CSV/Google Sheets export, and interactive web dashboard. 60 articles scraped, 34 matched via meaning-based NLP filtering.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://shyamkumar.in/assets/og-news-scraper.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* News Scraper — amber/data extraction theme (#FFAB00) */
+    .case-header h1 {
+      background: linear-gradient(135deg, #FFAB00, #FF6D00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .case-category {
+      background: rgba(255, 171, 0, 0.08);
+      color: #FFAB00;
+      border-color: rgba(255, 171, 0, 0.15);
+    }
+    .case-section h2 .section-number { color: #FFAB00; }
+    .arch-diagram { color: #FFAB00; }
+    .stat-card .stat-value { color: #FFAB00; }
+    .case-footer .footer-links a:hover {
+      border-color: #FFAB00;
+      color: #FFAB00;
+      background: rgba(255, 171, 0, 0.08);
+    }
+    .case-footer .footer-links a.primary-btn {
+      background: rgba(255, 171, 0, 0.1);
+      border-color: rgba(255, 171, 0, 0.3);
+      color: #FFAB00;
+    }
+    .case-footer .footer-links a.primary-btn:hover {
+      background: rgba(255, 171, 0, 0.2);
+      box-shadow: 0 0 20px rgba(255, 171, 0, 0.1);
+    }
+    .case-nav a:hover { color: #FFAB00; }
+    ::selection { background: #FFAB00; color: #000; }
+    .code-inline {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      background: var(--surface);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #FFAB00;
+      border: 1px solid var(--border);
+    }
+    .demo-link {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 10px 24px;
+      border-radius: 8px;
+      background: rgba(255, 171, 0, 0.1);
+      border: 1px solid rgba(255, 171, 0, 0.3);
+      color: #FFAB00;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+    .demo-link:hover {
+      background: rgba(255, 171, 0, 0.2);
+      box-shadow: 0 0 24px rgba(255, 171, 0, 0.08);
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .result-item {
+      padding: 16px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    .result-item .number {
+      font-size: 28px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: #FFAB00;
+    }
+    .result-item .label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+  </style>
+  <title>News Scraper — Case Study | Shyam Kumar</title>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="case-nav">
+    <a href="../index.html">&larr; Back to Portfolio</a>
+    <span class="nav-title">News Scraper</span>
+  </nav>
+
+  <!-- Article -->
+  <article class="case-article">
+
+    <!-- Header -->
+    <header class="case-header">
+      <span class="case-category">AI Data Extraction System</span>
+      <h1>News Scraper</h1>
+      <p class="case-tagline">
+        A production-grade paginated news archive scraper with AI-powered semantic keyword filtering,
+        Google Sheets export, and an interactive live dashboard.
+      </p>
+      <div class="case-meta">
+        <span>&#128197; 2026</span>
+        <span>&#9889; Live — deployed and demo-ready</span>
+        <span>&#128200; Python, FastAPI, sentence-transformers, BeautifulSoup, Scrapy</span>
+        <span><a href="https://github.com/ShyamKumar1/news-scraper-demo" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='#FFAB00'" onmouseout="this.style.color='var(--text-muted)'">&#128279; GitHub</a></span>
+        <span><a href="https://cozy-clafoutis-6fdea8.netlify.app" target="_blank" rel="noopener" style="color:var(--text-muted);text-decoration:none;transition:var(--transition);" onmouseover="this.style.color='#FFAB00'" onmouseout="this.style.color='var(--text-muted)'">&#127760; Live Dashboard</a></span>
+      </div>
+    </header>
+
+    <!-- 01 — The Problem -->
+    <section class="case-section">
+      <h2><span class="section-number">01</span> The Problem</h2>
+      <p>
+        Media monitoring and investigative journalism teams track hundreds of articles published daily across
+        dozens of news archives. Each archive has its own pagination structure, HTML layout, and access patterns.
+        The manual workflow is unsustainable: open each site, scan headlines, copy-paste what's relevant into
+        a spreadsheet, repeat.
+      </p>
+      <p>
+        Off-the-shelf scraping tools exist, but they share a fundamental flaw: <strong>keyword matching is
+        literal</strong>. A filter for "climate policy" misses articles titled "EPA announces new emissions rules" because
+        the words don't match. Journalists either accept noisy results (80% irrelevant) or spend hours curating
+        manually. What they need is a scraper that understands <strong>meaning</strong>, not just strings.
+      </p>
+      <p>
+        The core challenge: <strong>build an automated system that scrapes paginated news archives at scale,
+        filters articles by what they actually mean (not just what they say), and delivers clean, structured
+        data directly into Google Sheets</strong> — with no manual cleaning required.
+      </p>
+    </section>
+
+    <!-- 02 — Architecture -->
+    <section class="case-section">
+      <h2><span class="section-number">02</span> Architecture</h2>
+      <p>
+        The system follows a three-stage pipeline: <strong>Scrape → Filter → Export</strong>. Each stage is an
+        independent module with a clear interface, making the system adaptable to any news archive by simply
+        swapping the site-specific CSS selectors in the configuration.
+      </p>
+
+      <pre class="arch-diagram">News Archive (paginated)
+│
+▼
+Stage 1: Scraper Engine
+├── Navigates paginated archives via "next page" links
+├── Extracts headline, URL, publication date, metadata
+├── Configurable CSS selectors per site
+└── Rate-limited requests with error isolation
+│
+▼
+Stage 2: AI/NLP Semantic Filter
+├── Sentence-transformers (all-MiniLM-L6-v2)
+├── Embeds both keywords and articles into 384-dim vectors
+├── Cosine similarity matching — catches meaning, not just strings
+├── Configurable threshold (0.0 - 1.0)
+└── Each matched article gets a category + relevance score
+│
+▼
+Stage 3: Export Layer
+├── CSV export (immediate, zero setup)
+├── Google Sheets API (service account auth)
+└── Optional: FastAPI web dashboard with search/filter UI</pre>
+
+      <p>
+        The architecture is deliberately <strong>site-agnostic</strong>. The config.yaml holds all
+        site-specific selectors, so re-targeting a different news archive is a config change, not a code change.
+      </p>
+    </section>
+
+    <!-- 03 — Tech Stack -->
+    <section class="case-section">
+      <h2><span class="section-number">03</span> Tech Stack</h2>
+
+      <table class="tech-table">
+        <thead>
+          <tr>
+            <th>Technology</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Python 3.14</td>
+            <td>Core runtime — scraping, filtering, API</td>
+          </tr>
+          <tr>
+            <td>BeautifulSoup 4 + lxml</td>
+            <td>HTML parsing — article extraction from archive pages</td>
+          </tr>
+          <tr>
+            <td>Requests + Session</td>
+            <td>HTTP client with rate limiting and retry logic</td>
+          </tr>
+          <tr>
+            <td>sentence-transformers</td>
+            <td>all-MiniLM-L6-v2 — 384-dim embeddings for semantic keyword matching</td>
+          </tr>
+          <tr>
+            <td>numpy</td>
+            <td>Cosine similarity computation between keyword and article vectors</td>
+          </tr>
+          <tr>
+            <td>FastAPI + Uvicorn</td>
+            <td>REST API for the interactive dashboard backend</td>
+          </tr>
+          <tr>
+            <td>gspread + google-auth</td>
+            <td>Google Sheets API — auto-export filtered results</td>
+          </tr>
+          <tr>
+            <td>PyYAML</td>
+            <td>Externalized configuration (target sites, keywords, thresholds)</td>
+          </tr>
+          <tr>
+            <td>Netlify</td>
+            <td>Static dashboard hosting — live demo accessible without setup</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ═══ Code Highlight ═══ -->
+    <section class="case-section">
+      <h2><span class="section-number">⚡</span> Code Highlight</h2>
+      <p>The semantic filter engine pre-computes keyword embeddings once, then matches every article via cosine similarity in a single matrix operation — no per-article model inference.</p>
+      <pre class="code-sample" style="background:#0d0d14;border:1px solid #1a1a24;border-radius:10px;padding:20px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;overflow-x:auto;color:#abb2bf;">class SemanticFilter:
+    def _semantic_filter(self, articles: list) -> list:
+        self._load_model()
+
+        texts = []
+        for a in articles:
+            text = a.headline
+            if a.summary:
+                text += ". " + a.summary[:500]
+            texts.append(text)
+
+        article_embeddings = self._model.encode(
+            texts, normalize_embeddings=True
+        )
+
+        results = []
+        for i, article in enumerate(articles):
+            art_emb = article_embeddings[i]
+            similarities = np.dot(self._keyword_embeddings, art_emb)
+            best_idx = int(np.argmax(similarities))
+            best_score = float(similarities[best_idx])
+
+            if best_score &gt;= self.threshold:
+                article.category = self.keywords[best_idx]
+                article.relevance_score = round(best_score, 4)
+                results.append(article)
+
+        return results</pre>
+    </section>
+
+    <!-- 04 — Key Challenges -->
+    <section class="case-section">
+      <h2><span class="section-number">04</span> Key Challenges</h2>
+
+      <h3>&#128230; 1. Generic Pagination Handling</h3>
+      <p>
+        Every news archive paginates differently. Some use "Next →" links, others use numbered page buttons
+        (1, 2, 3...), and a few use infinite scroll with dynamic URL parameters. The scraper needed to be
+        generic enough to handle all patterns while remaining simple to configure.
+      </p>
+      <p>
+        The solution is a <strong>CSS-selector-driven architecture</strong>: each site's config specifies an
+        <span class="code-inline">article_container</span>, <span class="code-inline">title_selector</span>,
+        and <span class="code-inline">next_page_selector</span> as standard CSS selectors. To target a new site,
+        you update these three values in config.yaml — no code changes. The scraper follows the "next page"
+        selector recursively until the config's <span class="code-inline">max_pages</span> limit is reached or
+        no more pages exist.
+      </p>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#9889; Design Decision</span>
+        <p>
+          The selector-based approach was chosen over a regex or URL-pattern heuristic because news sites
+          are structurally inconsistent. A selector-based config means the system works on any site with a
+          predictable HTML structure — which includes essentially all major news archives. Per-article error
+          isolation ensures one broken link doesn't stop the entire crawl.
+        </p>
+      </div>
+
+      <h3>&#9889; 2. Semantic Threshold Tuning</h3>
+      <p>
+        Setting the cosine similarity threshold is a precision-recall tradeoff. A high threshold (0.45) catches
+        only very close matches but misses conceptually related articles. A low threshold (0.10) catches everything
+        but reintroduces noise. The optimal value depends on the keyword breadth and article corpus size.
+      </p>
+      <p>
+        The demo uses a <strong>threshold of 0.20</strong> with 8 diverse keywords against 60 HN articles.
+        This produced 34 matches — enough to demonstrate the concept while still filtering out 43% of noise.
+        The web dashboard lets users adjust this in real-time and immediately see the impact on results.
+      </p>
+
+      <h3>&#128200; 3. Rate Limiting Without Hard Blocking</h3>
+      <p>
+        Production news archives actively block aggressive scrapers. HN returns HTTP 429 (Too Many Requests)
+        after roughly 1 request/second. The system implements configurable delays between page requests and
+        uses browser-like User-Agent headers to appear as a standard visitor. The error handling is
+        per-request: a single page timeout doesn't abort the entire crawl — it logs the failure and continues
+        with the next page.
+      </p>
+
+      <h3>&#127760; 4. Client-Facing Demo Without Backend</h3>
+      <p>
+        The full system requires a Python backend to run. For the client demo, I needed something they could
+        click immediately without installing anything. The solution: a <strong>static dashboard</strong> with
+        pre-computed results deployed on Netlify. The full FastAPI backend (for live scraping) is available
+        in the repo for self-hosting, but the static demo gives instant visual proof.
+      </p>
+    </section>
+
+    <!-- 05 — Results -->
+    <section class="case-section">
+      <h2><span class="section-number">05</span> Results</h2>
+
+      <p>
+        The demo run against Hacker News (2 pages, 8 keywords, 0.20 threshold) produced:
+      </p>
+
+      <div class="results-grid">
+        <div class="result-item">
+          <div class="number">60</div>
+          <div class="label">Articles Scraped</div>
+        </div>
+        <div class="result-item">
+          <div class="number">34</div>
+          <div class="label">Matched by AI Filter</div>
+        </div>
+        <div class="result-item">
+          <div class="number">8</div>
+          <div class="label">Keyword Categories</div>
+        </div>
+        <div class="result-item">
+          <div class="number">2</div>
+          <div class="label">Pagination Pages</div>
+        </div>
+      </div>
+
+      <p>
+        Key <strong>semantic matching examples</strong> that demonstrate the AI filtering in action:
+      </p>
+
+      <ul>
+        <li><strong>"Apple reveals new AI architecture built around Google Gemini models"</strong> &rarr; <em>artificial intelligence</em> (0.34) — the headline never says "AI" in the keyword list but the embedding catches the meaning</li>
+        <li><strong>"OpenCV 5 Is Here: The Biggest Leap in Years for Computer Vision"</strong> &rarr; <em>open source</em> (0.25) — no mention of "open source" in the title, but the model recognizes OpenCV's nature</li>
+        <li><strong>"Are you expected to run five Python type-checkers now?"</strong> &rarr; <em>python</em> (0.45) — strong direct match, high confidence</li>
+        <li><strong>"Surveillance is not safety: A statement on the UK's latest threat to privacy"</strong> &rarr; <em>security</em> (0.45) — privacy/security semantic cluster</li>
+        <li><strong>"xAI is looking more like a datacentre REIT than a frontier lab"</strong> &rarr; <em>data</em> (0.32) — "datacentre" maps to data infrastructure</li>
+      </ul>
+
+      <p>
+        The full interactive dashboard is live at <a href="https://cozy-clafoutis-6fdea8.netlify.app" target="_blank" rel="noopener" style="color:#FFAB00;">cozy-clafoutis-6fdea8.netlify.app</a>
+        — searchable, filterable by category, with CSV export.
+      </p>
+
+      <a href="https://cozy-clafoutis-6fdea8.netlify.app" target="_blank" rel="noopener" class="demo-link">
+        &#127760; View Live Dashboard &rarr;
+      </a>
+    </section>
+
+    <!-- 06 — What I Learned -->
+    <section class="case-section">
+      <h2><span class="section-number">06</span> What I Learned</h2>
+
+      <div class="insight-box insight-box-purple">
+        <span class="insight-label">&#128218; Lesson 1</span>
+        <p>
+          <strong>Semantic filtering beats keyword matching by an order of magnitude for news.</strong>
+          News articles deliberately use varied vocabulary to avoid repetition — a single story about AI
+          might use "machine learning," "neural networks," "deep learning," and "artificial intelligence"
+          across different paragraphs. Semantic embeddings collapse these into the same vector neighborhood,
+          so you catch the story regardless of which synonym the writer chose. A keyword approach would
+          require an ever-growing list of synonyms; embeddings handle it implicitly.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-gold">
+        <span class="insight-label">&#128218; Lesson 2</span>
+        <p>
+          <strong>A working demo is worth a thousand words in a proposal.</strong> When clients evaluate
+          freelancers on Upwork, they read 15-20 proposals. Most are text promises. Sending a live URL
+          where they can interact with your work before hiring you changes the dynamic from "can this person
+          do it?" to "when can they start?" The 2-hour investment in building the static dashboard and
+          deploying to Netlify returned more credibility than any proposal paragraph could.
+        </p>
+      </div>
+
+      <div class="insight-box insight-box-cyan">
+        <span class="insight-label">&#128218; Lesson 3</span>
+        <p>
+          <strong>Design matters even for backend tools.</strong> The web dashboard wasn't strictly required
+          by the project scope, but presenting the output in a dark-themed, searchable, filterable interface
+          immediately signals production quality. It tells the client: "I don't just write code that works
+          — I build systems that people actually want to use." For a data extraction tool that will be used
+          daily by journalists, the UX of the output matters as much as the accuracy of the scrape.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="case-footer">
+      <div class="footer-links">
+        <a href="https://github.com/ShyamKumar1/news-scraper-demo" target="_blank" rel="noopener" class="primary-btn">&#128279; View on GitHub</a>
+        <a href="https://cozy-clafoutis-6fdea8.netlify.app" target="_blank" rel="noopener" class="primary-btn">&#127760; Live Dashboard</a>
+        <a href="../index.html" target="_blank" rel="noopener">&#128279; Back to Portfolio</a>
+      </div>
+      <a href="../index.html" class="back-link">&larr; Back to Portfolio</a>
+      <div class="private-note" style="margin-top:20px;padding:12px 16px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);font-size:12px;color:#555;">
+        🔒 Source code is public on GitHub. This case study details the architecture, tech stack, and engineering decisions.
+      </div>
+    </footer>
+
+  </article>
+
+</body>
+</html>
